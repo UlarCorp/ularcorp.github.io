@@ -277,75 +277,144 @@
   }
 
   // ---------- Сборка ----------
+  // Данные лежат рядом со скриптом: работает и с главной, и из папки презентации
+  var base = (document.currentScript && document.currentScript.src) || location.href;
   var routeHost = document.getElementById("route");
   var route = null;
-  var ready = routeHost ? fetch("assets/roadmap.json", { cache: "no-cache" })
+  var ready = routeHost ? fetch(new URL("roadmap.json", base), { cache: "no-cache" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (data) { route = buildRoute(routeHost, data); })
     .catch(function () { routeHost.appendChild(el("p", "updated", "Не удалось загрузить дорожную карту. Обновите страницу.")); })
     : Promise.resolve();
 
-  // Глубина: веер телефонов слегка поворачивается за курсором
-  var fan = document.querySelector(".fan");
-  if (fan && !reduce && window.matchMedia("(pointer: fine)").matches) {
+  // Тема: переключатель запоминает выбор; без выбора - как в системе
+  function toggleTheme() {
+    var root = document.documentElement;
+    var dark = root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  }
+  var themeBtn = document.getElementById("theme");
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+
+  var fine = window.matchMedia("(pointer: fine)").matches;
+
+  // Объем: телефон на главной и веер в презентации чуть доворачиваются за курсором
+  var tilt = document.getElementById("phone3d") || document.querySelector(".fan");
+  if (tilt && !reduce && fine) {
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
     document.addEventListener("mousemove", function (e) {
-      var x = e.clientX / window.innerWidth - 0.5, y = e.clientY / window.innerHeight - 0.5;
-      fan.style.transform = "perspective(1200px) rotateY(" + (x * 10) + "deg) rotateX(" + (-y * 6) + "deg)";
+      tx = e.clientX / window.innerWidth - 0.5; ty = e.clientY / window.innerHeight - 0.5;
+      if (!raf) raf = requestAnimationFrame(loop);
     });
+    function loop() {
+      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08; // плавное догоняние, без рывков
+      tilt.style.setProperty("--mx", (cx * 16).toFixed(2) + "deg");
+      tilt.style.setProperty("--my", (-cy * 10).toFixed(2) + "deg");
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.001 ? requestAnimationFrame(loop) : 0;
+    }
   }
 
-  var isDeck = document.body.classList.contains("deck-page");
+  // Карусель экранов: кнопки, перетаскивание мышью, центральный экран крупнее и ярче
+  Array.prototype.forEach.call(document.querySelectorAll(".strip"), function (strip) {
+    var box = el("div", "carousel");
+    strip.parentNode.insertBefore(box, strip);
+    box.appendChild(strip);
+    function step() { var f = strip.querySelector("figure"); return f ? f.getBoundingClientRect().width + 20 : 300; }
+    [["prev", "Предыдущий экран", "M15 5l-7 7 7 7", -1], ["next", "Следующий экран", "M9 5l7 7-7 7", 1]].forEach(function (b) {
+      var btn = el("button", "car-btn car-" + b[0]);
+      btn.type = "button";
+      btn.setAttribute("aria-label", b[1]);
+      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + b[2] + '" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      btn.addEventListener("click", function () { strip.scrollBy({ left: b[3] * step(), behavior: reduce ? "auto" : "smooth" }); });
+      box.appendChild(btn);
+    });
+    var figs = strip.querySelectorAll("figure"), queued = 0;
+    function depth() {
+      queued = 0;
+      var r = strip.getBoundingClientRect(), mid = r.left + r.width / 2;
+      Array.prototype.forEach.call(figs, function (f) {
+        var fr = f.getBoundingClientRect(), d = Math.min(1, Math.abs(fr.left + fr.width / 2 - mid) / (r.width * 0.6));
+        f.style.setProperty("--d", d.toFixed(3));
+      });
+      box.querySelector(".car-prev").disabled = strip.scrollLeft < 4;
+      box.querySelector(".car-next").disabled = strip.scrollLeft + strip.clientWidth > strip.scrollWidth - 4;
+    }
+    strip.addEventListener("scroll", function () { if (!queued) queued = requestAnimationFrame(depth); }, { passive: true });
+    window.addEventListener("resize", depth);
+    // ширина ленты известна, только когда картинки загрузились и слайд показан
+    Array.prototype.forEach.call(strip.querySelectorAll("img"), function (im) { if (!im.complete) im.addEventListener("load", depth); });
+    document.addEventListener("slidechange", depth);
+    depth();
+    // перетаскивание мышью
+    var down = false, x0 = 0, s0 = 0, moved = false;
+    strip.addEventListener("mousedown", function (e) { down = true; moved = false; x0 = e.clientX; s0 = strip.scrollLeft; strip.classList.add("drag"); e.preventDefault(); });
+    window.addEventListener("mousemove", function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 4) moved = true; strip.scrollLeft = s0 - dx; });
+    window.addEventListener("mouseup", function () { if (!down) return; down = false; strip.classList.remove("drag"); });
+    strip.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
+  });
+
+  var isPresent = document.body.classList.contains("present-page");
+
+  // ---------- Главная: плавное появление разделов и запуск маршрута ----------
+  if (!isPresent) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-active"); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (s) { io.observe(s); });
+    ready.then(function () {
+      if (!route) return;
+      var obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { route.play(); obs.disconnect(); } }, { threshold: 0.3 });
+      obs.observe(routeHost.querySelector(".route-svg") || routeHost);
+    });
+    return;
+  }
+
+  // ---------- Презентация: холст 16:9, один слайд на экране ----------
+  var stage = document.getElementById("stage");
+  // Холст заполняет весь экран: по короткой стороне 1600x900, по длинной растягивается - без полос по краям
+  function fit() {
+    var W = window.innerWidth, H = window.innerHeight, s, w, h;
+    if (W / H > 16 / 9) { s = H / 900; w = W / s; h = 900; } else { s = W / 1600; w = 1600; h = H / s; }
+    stage.style.width = w + "px";
+    stage.style.height = h + "px";
+    stage.style.setProperty("--s", s);
+  }
+  fit();
+  window.addEventListener("resize", fit);
+
   ready.then(function () {
-    if (!isDeck) {
-      if (route) {
-        var obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { route.play(); obs.disconnect(); } }, { threshold: 0.3 });
-        obs.observe(routeHost.querySelector(".route-svg") || routeHost);
-      }
-      return;
-    }
-
-    var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+    var slides = Array.prototype.slice.call(stage.querySelectorAll(".pslide"));
     var count = document.getElementById("count");
-    var top = document.querySelector(".fixed-top");
     var bar = document.getElementById("progress");
-    var current = 0;
+    var current = -1;
 
-    function show(i) {
-      current = Math.max(0, Math.min(slides.length - 1, i));
-      count.textContent = (current + 1) + " / " + slides.length;
-      document.getElementById("prev").disabled = current === 0;
-      document.getElementById("next").disabled = current === slides.length - 1;
-      if (top) top.classList.toggle("on-band", slides[current].classList.contains("band"));
-      if (bar) bar.style.transform = "scaleX(" + ((current + 1) / slides.length) + ")";
-    }
     function go(i) {
       i = Math.max(0, Math.min(slides.length - 1, i));
-      slides[i].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-      show(i);
-    }
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("is-active");
-        show(slides.indexOf(e.target));
-        history.replaceState(null, "", "#" + e.target.id);
-        if (route && e.target.contains(routeHost)) route.play();
+      if (i === current) return;
+      var dir = i > current ? 1 : -1;
+      slides.forEach(function (s, k) {
+        s.classList.toggle("is-current", k === i);
+        s.classList.toggle("is-before", k < i);
+        s.classList.toggle("is-after", k > i);
+        s.setAttribute("aria-hidden", k === i ? "false" : "true");
+        if (k === i) s.removeAttribute("inert"); else s.setAttribute("inert", "");
       });
-    }, { threshold: 0.5 });
-    slides.forEach(function (s) { io.observe(s); });
+      document.body.dataset.dir = dir;
+      current = i;
+      count.textContent = (i + 1) + " / " + slides.length;
+      document.getElementById("prev").disabled = i === 0;
+      document.getElementById("next").disabled = i === slides.length - 1;
+      document.body.classList.toggle("on-band", slides[i].classList.contains("band"));
+      if (bar) bar.style.transform = "scaleX(" + ((i + 1) / slides.length) + ")";
+      history.replaceState(null, "", "#" + slides[i].id);
+      if (route && slides[i].contains(routeHost)) route.play();
+      document.dispatchEvent(new Event("slidechange"));
+    }
 
     document.getElementById("prev").addEventListener("click", function () { go(current - 1); });
     document.getElementById("next").addEventListener("click", function () { go(current + 1); });
     document.getElementById("full").addEventListener("click", toggleFull);
-    // Тема: переключатель запоминает выбор; без выбора - как в системе
-    function toggleTheme() {
-      var root = document.documentElement;
-      var dark = root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-      root.dataset.theme = dark ? "light" : "dark";
-      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
-    }
-    document.getElementById("theme").addEventListener("click", toggleTheme);
     function toggleFull() {
       if (document.fullscreenElement) { document.exitFullscreen(); return; }
       var p = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
@@ -353,24 +422,39 @@
     }
 
     document.addEventListener("keydown", function (e) {
-      var t = e.target;
+      var t = e.target, k = e.key;
       if (e.altKey || e.ctrlKey || e.metaKey) return;
-      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(t.tagName))) {
-        if (e.key === " " || e.key === "Enter") return;
-      }
-      if (t && t.classList && (t.classList.contains("strip") || t.classList.contains("route-scroll")) &&
-          (e.key === "ArrowLeft" || e.key === "ArrowRight")) return;
-      var k = e.key;
-      if (k === "ArrowRight" || k === "PageDown" || (k === " " && !e.shiftKey)) { e.preventDefault(); go(current + 1); }
-      else if (k === "ArrowLeft" || k === "PageUp" || (k === " " && e.shiftKey)) { e.preventDefault(); go(current - 1); }
+      if (t && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName) && (k === " " || k === "Enter")) return;
+      if (t && t.classList && (t.classList.contains("strip") || t.classList.contains("route-scroll")) && (k === "ArrowLeft" || k === "ArrowRight")) return;
+      if (k === "ArrowRight" || k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) { e.preventDefault(); go(current + 1); }
+      else if (k === "ArrowLeft" || k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) { e.preventDefault(); go(current - 1); }
       else if (k === "Home") { e.preventDefault(); go(0); }
       else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
       else if (k === "f" || k === "F" || k === "а" || k === "А") { toggleFull(); }
       else if (k === "t" || k === "T" || k === "е" || k === "Е") { toggleTheme(); }
     });
 
+    // Колесо и тачпад: один жест - один слайд (горизонтальную ленту экранов не трогаем)
+    var lock = 0;
+    window.addEventListener("wheel", function (e) {
+      if (e.target.closest && e.target.closest(".strip, .route-scroll") && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      var now = Date.now();
+      if (now < lock || Math.abs(e.deltaY) < 8) return;
+      lock = now + 850;
+      go(current + (e.deltaY > 0 ? 1 : -1));
+    }, { passive: false });
+
+    // Свайп на телефоне и планшете
+    var sx = 0, sy = 0;
+    window.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchend", function (e) {
+      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 50) return;
+      if (Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1)); else go(current + (dy < 0 ? 1 : -1));
+    }, { passive: true });
+
     var start = location.hash ? slides.findIndex(function (s) { return "#" + s.id === location.hash; }) : 0;
-    if (start > 0) slides[start].scrollIntoView({ block: "start" });
-    show(Math.max(start, 0));
+    go(Math.max(start, 0));
   });
 })();

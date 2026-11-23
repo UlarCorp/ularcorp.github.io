@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кабинет сотрудника — презентация</title>
+<meta name="description" content="Кабинет сотрудника холдинга: мобильное приложение Ular, связь с 1С:ЗУП и дорожная карта развития.">
+<meta property="og:title" content="Кабинет сотрудника">
+<meta property="og:description" content="Зарплата, отпуск, справки и электронный пропуск в телефоне.">
+<meta property="og:image" content="../assets/screens/01_home.webp">
+<meta name="theme-color" content="#FF4600">
+<link rel="icon" href="../assets/mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body class="present-page">
+
+<header class="top fixed-top">
+  <div class="wrap">
+    <a class="brand" href="../" aria-label="Кабинет сотрудника — в начало"><svg viewBox="0 0 849 220" role="img" aria-label="Ular"><path d="M841.567 57.8906H849.352V108.357H829.11C807 108.357 796.412 117.681 796.412 141.348V218.577H742.539V57.8906H792.053L796.412 81.5576C805.443 66.61 818.211 57.8906 841.567 57.8906Z" fill="currentColor"/><path d="M649.555 56.0234C696.577 56.0234 723.981 75.9535 723.981 114.879V218.578H676.336L672.287 200.205C660.454 213.595 646.752 220.446 625.888 220.446C591.01 220.446 568.277 203.942 568.277 172.49C568.277 137.612 595.993 117.993 647.686 117.993H670.73V111.765C670.73 100.555 662.945 93.0809 647.998 93.0809C633.673 93.0809 624.019 99.309 623.085 108.651H571.391C574.194 77.5105 604.712 56.0234 649.555 56.0234ZM640.212 183.389C658.585 183.389 670.419 171.244 670.73 151.937V151.314H647.998C631.804 151.314 622.462 158.165 622.462 169.064C622.462 177.784 629.313 183.389 640.212 183.389Z" fill="currentColor"/><path d="M499.242 218.579V0.59375H553.116V218.579H499.242Z" fill="currentColor"/><path d="M298.93 123.911V0.59375H356.229V127.025C356.229 155.986 366.194 172.179 392.04 172.179C417.887 172.179 427.852 155.986 427.852 127.025V0.59375H485.151V123.911C485.151 185.881 453.076 220.447 392.04 220.447C331.005 220.447 298.93 185.881 298.93 123.911Z" fill="currentColor"/><path d="M29.8086 177.066C33.7452 177.066 37.3371 179.893 39.753 183.002C46.1115 191.182 62.901 204.238 99.253 217.545C46.9515 217.545 9.14565 211.108 0.314484 185.114C-1.13913 180.835 2.66757 177.066 7.18655 177.066H29.8086ZM69.8587 109.004C83.4162 109.004 94.1327 121.016 97.971 134.019C117.186 188.463 173.441 217.545 173.441 217.545C140.13 217.545 106.184 213.955 77.4821 197.048C54.4154 183.46 29.5887 162.787 21.2532 134.056C17.4759 121.036 28.8384 109.004 42.3958 109.004H69.8587ZM175.006 0C191.834 0 205.317 13.4258 206.041 30.2379C208.97 98.2633 226.685 202.657 282.727 217.545H234.255C202.698 217.545 170.627 209.135 148.651 186.488C109.204 145.836 95.3131 97.632 91.8499 28.0963C91.8501 12.3522 104.614 0.000155662 120.358 0H175.006Z" fill="#FF4600"/></svg></a>
+    <nav class="nav" aria-label="Сайт"><a href="../">Сайт Кабинета сотрудника</a></nav>
+  </div>
+</header>
+
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+<main class="stage" id="stage">
+
+  <section class="pslide band hero" id="start" data-title="Кабинет сотрудника">
+    <div class="wrap">
+      <div class="hero-text">
+        <p class="kicker">Мобильное приложение Ular</p>
+        <h1>Кабинет сотрудника</h1>
+        <p class="lead">Зарплата, отпуск, справки и электронный пропуск в телефоне — без звонков в бухгалтерию и походов в отдел кадров. Данные приходят прямо из 1С вашей организации.</p>
+        <div class="stores">
+          <a class="store" href="https://apps.apple.com/kz/app/ular/id6813023469" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.9-.9-3.1-.8c-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.7zM14.2 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>
+            App Store
+          </a>
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.qazdefense.ular" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3.5v17c0 .4.4.7.8.5l9.7-9-9.7-9c-.4-.2-.8.1-.8.5zm11.6 7.4 2.7-2.5-11-6.2 8.3 8.7zm0 2.2-8.3 8.7 11-6.2-2.7-2.5zm1.1-1.1 3 2.8 2.1-1.2c.7-.4.7-1.4 0-1.8l-2.1-1.2-3 2.8z"/></svg>
+            Google Play
+          </a>
+        </div>
+        
+      </div>
+      <div class="fan" aria-hidden="true">
+        <img src="../assets/screens/phone_02_salary.webp" alt="" width="520" height="944">
+        <img src="../assets/screens/phone_04_vacation.webp" alt="" width="520" height="944">
+        <img src="../assets/screens/phone_01_home.webp" alt="" width="520" height="944">
+      </div>
+    </div>
+  </section>
+
+  <section class="pslide" id="features" data-title="Возможности">
+    <div class="wrap">
+      <h2>Что можно сделать в приложении</h2>
+      <p class="intro">Все, за чем раньше шли к кадровикам и бухгалтерам, — в одном приложении на казахском, русском или английском.</p>
+      <div class="tasks">
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></svg>
+          <div><h3>Посмотреть зарплату</h3><p>Начисления и удержания за любой месяц, расчетный листок можно скачать в PDF.</p></div>
+        </div>
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3"/></svg>
+          <div><h3>Оформить отпуск</h3><p>Остаток дней, календарь и заявление на отпуск — решение приходит в приложение.</p></div>
+        </div>
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+          <div><h3>Заказать справку</h3><p>Справка с места работы, в том числе с зарплатой. Готовую можно скачать или отправить.</p></div>
+        </div>
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M8 17c.8-1.8 2.2-2.6 4-2.6s3.2.8 4 2.6"/></svg>
+          <div><h3>Показать пропуск</h3><p>Электронный пропуск с фото — охране достаточно экрана телефона.</p></div>
+        </div>
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
+          <div><h3>Получить скидку</h3><p>Партнеры холдинга и условия скидок для сотрудников.</p></div>
+        </div>
+        <div class="task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21h4"/></svg>
+          <div><h3>Узнать новости</h3><p>Новости компании и уведомления — без рассылок в мессенджерах.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pslide" id="screens" data-title="Экраны">
+    <div class="wrap">
+      <h2>Как это выглядит</h2>
+      <div class="strip" tabindex="0" aria-label="Экраны приложения, листаются вбок">
+        <figure><img src="../assets/screens/01_home.webp" alt="Главный экран: стаж, остаток отпуска, зарплата" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/02_salary.webp" alt="Зарплата за месяц" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/03_pass.webp" alt="Электронный пропуск" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/04_vacation.webp" alt="Отпуск и заявление" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/05_partners.webp" alt="Партнеры и скидки" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/06_calculator.webp" alt="Калькулятор зарплаты" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/07_news.webp" alt="Новости компании" width="600" height="1300"></figure>
+        <figure><img src="../assets/screens/08_calendar.webp" alt="Производственный календарь" width="600" height="1300"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pslide" id="how" data-title="Как подключиться">
+    <div class="wrap">
+      <h2>Как начать пользоваться</h2>
+      <p class="intro">Подключение занимает пару минут. Пароль от 1С сотруднику не нужен.</p>
+      <ol class="steps">
+        <li><h3>Получить код доступа</h3><p>Отдел кадров выдает сотруднику личный код доступа.</p></li>
+        <li><h3>Войти по ИИН</h3><p>Приложение само находит организацию по ИИН. Остается ввести код и придумать пароль.</p></li>
+        <li><h3>Пользоваться</h3><p>Дальше вход по короткому коду, отпечатку или Face ID. Данные берутся из 1С вашей организации.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="pslide" id="trust" data-title="Надежность">
+    <div class="wrap">
+      <h2>Надежно и под контролем</h2>
+      <div class="facts">
+        <div><b>Данные из 1С</b><p>Зарплата, отпуска и кадровые данные — из учета вашей организации, без ручных выгрузок.</p></div>
+        <div><b>Закрытый вход</b><p>Пароль, а для повторного входа — код, отпечаток или Face ID.</p></div>
+        <div><b>Доступ по работе</b><p>При увольнении доступ закрывается автоматически.</p></div>
+        <div><b>Три языка</b><p>Казахский, русский и английский — и в приложении, и в сообщениях.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pslide route-slide" id="route-slide" data-title="Дорожная карта">
+    <div class="wrap">
+      <h2>Маршрут развития</h2>
+      <!-- Маршрут строит assets/deck.js из assets/roadmap.json -->
+      <div id="route" class="route"></div>
+    </div>
+  </section>
+
+  <section class="pslide band finale" id="end" data-title="Скачать">
+    <div class="wrap finale-grid">
+      <div class="finale-text">
+        <h2>Кабинет сотрудника уже в телефоне</h2>
+        <ol class="finale-steps">
+          <li><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><div><b>Установите Ular</b><span>Наведите камеру телефона на QR-код</span></div></li>
+          <li><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3"/></svg></span><div><b>Получите код доступа</b><span>Его выдает отдел кадров вашей организации</span></div></li>
+          <li><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><div><b>Войдите по ИИН</b><span>Придумайте пароль, дальше вход по коду или Face ID</span></div></li>
+        </ol>
+        <a class="finale-link" href="../roadmap.html">Маршрут развития одной страницей</a>
+      </div>
+      <div class="qr-cards">
+        <a class="qr-card" href="https://apps.apple.com/kz/app/ular/id6813023469" rel="noopener">
+          <img src="../assets/qr-ios.svg" alt="QR-код для App Store" width="160" height="160">
+          <span class="qr-meta"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.9-.9-3.1-.8c-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.4-1-2.4-3.7zM14.2 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg><b>App Store</b><span>iPhone</span></span>
+        </a>
+        <a class="qr-card" href="https://play.google.com/store/apps/details?id=com.qazdefense.ular" rel="noopener">
+          <img src="../assets/qr-android.svg" alt="QR-код для Google Play" width="160" height="160">
+          <span class="qr-meta"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3.5v17c0 .4.4.7.8.5l9.7-9-9.7-9c-.4-.2-.8.1-.8.5zm11.6 7.4 2.7-2.5-11-6.2 8.3 8.7zm0 2.2-8.3 8.7 11-6.2-2.7-2.5zm1.1-1.1 3 2.8 2.1-1.2c.7-.4.7-1.4 0-1.8l-2.1-1.2-3 2.8z"/></svg><b>Google Play</b><span>Android</span></span>
+        </a>
+      </div>
+      <p class="credit">Кабинет сотрудника холдинга. Разработка: QazDefense</p>
+    </div>
+  </section>
+
+</main>
+
+<nav class="pager" aria-label="Слайды">
+  <button type="button" id="prev" aria-label="Предыдущий слайд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <span id="count" aria-live="polite">1 / 1</span>
+  <button type="button" id="next" aria-label="Следующий слайд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button type="button" id="theme" aria-label="Светлая или темная тема (клавиша T)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <button type="button" id="full" aria-label="Во весь экран (клавиша F)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</nav>
+
+<script src="../assets/deck.js"></script>
+</body>
+</html>
