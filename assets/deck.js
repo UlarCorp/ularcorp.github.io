@@ -310,7 +310,7 @@
 
   // Стеклянная подложка в меню: переезжает к пункту под курсором, затем возвращается к текущему разделу
   Array.prototype.forEach.call(document.querySelectorAll(".nav"), function (nav) {
-    var items = Array.prototype.slice.call(nav.querySelectorAll("a"));
+    var items = Array.prototype.slice.call(nav.querySelectorAll("a, .theme-btn"));
     if (!items.length) return;
     var pill = el("span", "nav-glass");
     pill.setAttribute("aria-hidden", "true");
