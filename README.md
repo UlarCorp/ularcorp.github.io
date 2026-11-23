@@ -6,6 +6,7 @@
 - Главная: `index.html` - короткая страница с прокруткой
 - Презентация: `present/index.html` (https://ularcorp.github.io/present/) - слайды 16:9, стрелки, колесо, свайп, F - во весь экран, T - тема
 - Дорожная карта: слайд «Маршрут развития» и `roadmap.html`, данные — `assets/roadmap.json`, код — `assets/deck.js`
+- Изменения: `changes.html`, данные — `assets/changes.json` (релиз сверху, пункт `[тип, название, пояснение]`, тип `new`/`better`/`fix`, `status`: `soon` — готовится, `released` — выпущен). После релиза поменять `status` и добавить новый блок сверху
 - Стили: `assets/site.css` (цвета бренда, шрифт Onest вместо Aeonik)
 - Экраны: `assets/app/light/` и `assets/app/dark/` — снимки приложения с демо-данными, сайт показывает их в своей теме
 

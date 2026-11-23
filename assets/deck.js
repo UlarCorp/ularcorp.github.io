@@ -287,50 +287,113 @@
     .catch(function () { routeHost.appendChild(el("p", "updated", "Не удалось загрузить дорожную карту. Обновите страницу.")); })
     : Promise.resolve();
 
+  // ---------- Страница «Изменения»: релизы из changes.json, новые сверху ----------
+  var CH_ICON = {
+    new: '<path d="M12 5v14M5 12h14"/>',
+    better: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+    fix: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>'
+  };
+  var CH_TYPE = { new: "Новое", better: "Улучшение", fix: "Исправление" };
+  function buildChanges(host, data) {
+    (data.releases || []).forEach(function (r, i) {
+      var sec = el("section", "rel" + (r.status === "soon" ? " soon" : ""));
+      sec.style.setProperty("--i", i);
+      var head = el("header", "rel-head");
+      head.appendChild(el("span", "rel-ver", r.version));
+      var meta = el("div", "rel-meta");
+      meta.appendChild(el("h2", null, r.title));
+      meta.appendChild(el("span", "rel-date", r.date));
+      head.appendChild(meta);
+      head.appendChild(el("span", "rel-status", r.status === "soon" ? "Готовится" : "Выпущен"));
+      sec.appendChild(head);
+      var list = el("ul", "rel-items");
+      (r.items || []).forEach(function (it) {
+        var li = el("li", "rel-item t-" + it[0]);
+        var ic = el("span", "rel-ic");
+        ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + (CH_ICON[it[0]] || CH_ICON.new) + "</g></svg>";
+        ic.title = CH_TYPE[it[0]] || "";
+        li.appendChild(ic);
+        var tx = el("div");
+        tx.appendChild(el("b", null, it[1]));
+        if (it[2]) tx.appendChild(el("p", null, it[2]));
+        li.appendChild(tx);
+        list.appendChild(li);
+      });
+      sec.appendChild(list);
+      host.appendChild(sec);
+    });
+    // релизы проявляются по мере прокрутки
+    var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px" }) : null;
+    Array.prototype.forEach.call(host.querySelectorAll(".rel"), function (s) { if (io && !reduce) io.observe(s); else s.classList.add("in"); });
+  }
+  var changesHost = document.getElementById("changes");
+  if (changesHost) fetch(new URL("changes.json", base), { cache: "no-cache" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) { buildChanges(changesHost, data); })
+    .catch(function () { changesHost.appendChild(el("p", "updated", "Не удалось загрузить изменения. Обновите страницу.")); });
+
   // Тема: переключатель запоминает выбор; без выбора - как в системе
   // Новая тема расходится кругом от места нажатия (как в QazDesk); без поддержки браузера - сразу
-  function applyTheme() {
-    var root = document.documentElement;
-    var dark = root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    root.dataset.theme = dark ? "light" : "dark";
-    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
-  }
-  function toggleTheme(e) {
-    var btn = document.getElementById("theme");
-    if (!document.startViewTransition || reduce) { applyTheme(); return; }
-    var r = btn ? btn.getBoundingClientRect() : { left: innerWidth / 2, top: 0, width: 0, height: 0 };
-    var x = e && e.clientX ? e.clientX : r.left + r.width / 2, y = e && e.clientY ? e.clientY : r.top + r.height / 2;
-    var st = document.documentElement.style;
-    st.setProperty("--tx", x + "px"); st.setProperty("--ty", y + "px");
-    st.setProperty("--tr", Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + "px");
-    document.startViewTransition(applyTheme);
-  }
-  var themeBtn = document.getElementById("theme");
-  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
-
   // Снимки экранов приложения - в теме сайта: assets/app/light/* или assets/app/dark/*
   var shotRe = /\/app\/(light|dark)\//;
   function siteTheme() {
     var t = document.documentElement.dataset.theme;
     return t || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   }
+  function shots() {
+    return Array.prototype.filter.call(document.querySelectorAll("img"), function (img) { return shotRe.test(img.getAttribute("src") || ""); });
+  }
   function syncShots() {
     var want = "/app/" + siteTheme() + "/";
-    Array.prototype.forEach.call(document.querySelectorAll("img"), function (img) {
-      var src = img.getAttribute("src") || "";
-      if (shotRe.test(src) && src.indexOf(want) < 0) img.setAttribute("src", src.replace(shotRe, want));
+    shots().forEach(function (img) {
+      var src = img.getAttribute("src");
+      if (src.indexOf(want) < 0) img.setAttribute("src", src.replace(shotRe, want));
     });
   }
-  // Заранее грузим вторую тему, чтобы смена темы не показывала пустой экран телефона
-  function preloadOther() {
-    var other = siteTheme() === "dark" ? "/app/light/" : "/app/dark/";
-    Array.prototype.forEach.call(document.querySelectorAll("img"), function (img) {
-      if (shotRe.test(img.src)) (new Image()).src = img.src.replace(shotRe, other);
+  // Снимки нужной темы загружаем и декодируем заранее: при смене темы телефон меняется вместе с фоном
+  var decoded = {};
+  function prepare(theme) {
+    var want = "/app/" + theme + "/";
+    return Promise.all(shots().map(function (img) {
+      var url = img.src.replace(shotRe, want);
+      if (!decoded[url]) {
+        var im = new Image();
+        im.src = url;
+        decoded[url] = (im.decode ? im.decode() : new Promise(function (ok) { im.onload = ok; })).catch(function () {});
+      }
+      return decoded[url];
+    }));
+  }
+
+  // Тема: переключатель запоминает выбор; без выбора - как в системе
+  // Новая тема расходится кругом от места нажатия (как в QazDesk); без поддержки браузера - сразу
+  function applyTheme() {
+    var root = document.documentElement;
+    root.dataset.theme = siteTheme() === "dark" ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    syncShots();
+  }
+  function toggleTheme(e) {
+    var btn = document.getElementById("theme");
+    var next = siteTheme() === "dark" ? "light" : "dark";
+    // не дольше 700 мс: при медленной сети тема меняется, а снимок догрузится следом
+    var ready = Promise.race([prepare(next), new Promise(function (ok) { setTimeout(ok, 700); })]);
+    if (!document.startViewTransition || reduce) { ready.then(applyTheme); return; }
+    var r = btn ? btn.getBoundingClientRect() : { left: innerWidth / 2, top: 0, width: 0, height: 0 };
+    var x = e && e.clientX ? e.clientX : r.left + r.width / 2, y = e && e.clientY ? e.clientY : r.top + r.height / 2;
+    ready.then(function () {
+      var st = document.documentElement.style;
+      st.setProperty("--tx", x + "px"); st.setProperty("--ty", y + "px");
+      st.setProperty("--tr", Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + "px");
+      document.startViewTransition(applyTheme);
     });
   }
+  var themeBtn = document.getElementById("theme");
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
   syncShots();
-  window.addEventListener("load", preloadOther);
-  new MutationObserver(syncShots).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  window.addEventListener("load", function () { prepare(siteTheme() === "dark" ? "light" : "dark"); });
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncShots);
 
   // Стеклянная подложка в меню: переезжает к пункту под курсором, затем возвращается к текущему разделу
@@ -392,16 +455,29 @@
     var box = el("div", "carousel");
     strip.parentNode.insertBefore(box, strip);
     box.appendChild(strip);
-    function step() { var f = strip.querySelector("figure"); return f ? f.getBoundingClientRect().width + 20 : 300; }
     [["prev", "Предыдущий экран", "M15 5l-7 7 7 7", -1], ["next", "Следующий экран", "M9 5l7 7-7 7", 1]].forEach(function (b) {
       var btn = el("button", "car-btn car-" + b[0]);
       btn.type = "button";
       btn.setAttribute("aria-label", b[1]);
       btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + b[2] + '" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      btn.addEventListener("click", function () { strip.scrollBy({ left: b[3] * step(), behavior: reduce ? "auto" : "smooth" }); });
+      btn.addEventListener("click", function () { go(nearest() + b[3]); });
       box.appendChild(btn);
     });
-    var figs = strip.querySelectorAll("figure"), queued = 0;
+    var figs = strip.querySelectorAll("figure"), queued = 0, settle = 0, down = false;
+    // Телефон, ближайший к центру ленты, и плавная доводка к телефону по номеру
+    function nearest() {
+      var r = strip.getBoundingClientRect(), mid = r.left + r.width / 2, best = 0, bd = Infinity;
+      Array.prototype.forEach.call(figs, function (f, i) {
+        var fr = f.getBoundingClientRect(), d = Math.abs(fr.left + fr.width / 2 - mid);
+        if (d < bd) { bd = d; best = i; }
+      });
+      return best;
+    }
+    function go(i) {
+      i = Math.max(0, Math.min(figs.length - 1, i));
+      var f = figs[i], left = f.offsetLeft + f.offsetWidth / 2 - strip.clientWidth / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: reduce ? "auto" : "smooth" });
+    }
     function depth() {
       queued = 0;
       var r = strip.getBoundingClientRect(), mid = r.left + r.width / 2;
@@ -412,17 +488,22 @@
       box.querySelector(".car-prev").disabled = strip.scrollLeft < 4;
       box.querySelector(".car-next").disabled = strip.scrollLeft + strip.clientWidth > strip.scrollWidth - 4;
     }
-    strip.addEventListener("scroll", function () { if (!queued) queued = requestAnimationFrame(depth); }, { passive: true });
+    strip.addEventListener("scroll", function () {
+      if (!queued) queued = requestAnimationFrame(depth);
+      // после остановки прокрутки колесом или тачпадом - мягко к ближайшему телефону
+      clearTimeout(settle);
+      if (!down) settle = setTimeout(function () { go(nearest()); }, 180);
+    }, { passive: true });
     window.addEventListener("resize", depth);
     // ширина ленты известна, только когда картинки загрузились и слайд показан
     Array.prototype.forEach.call(strip.querySelectorAll("img"), function (im) { if (!im.complete) im.addEventListener("load", depth); });
     document.addEventListener("slidechange", depth);
     depth();
     // перетаскивание мышью
-    var down = false, x0 = 0, s0 = 0, moved = false;
+    var x0 = 0, s0 = 0, moved = false;
     strip.addEventListener("mousedown", function (e) { down = true; moved = false; x0 = e.clientX; s0 = strip.scrollLeft; strip.classList.add("drag"); e.preventDefault(); });
     window.addEventListener("mousemove", function (e) { if (!down) return; var dx = e.clientX - x0; if (Math.abs(dx) > 4) moved = true; strip.scrollLeft = s0 - dx; });
-    window.addEventListener("mouseup", function () { if (!down) return; down = false; strip.classList.remove("drag"); });
+    window.addEventListener("mouseup", function () { if (!down) return; down = false; strip.classList.remove("drag"); go(nearest()); });
     strip.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
   });
 
