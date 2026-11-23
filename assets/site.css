@@ -1070,7 +1070,7 @@ footer .wrap { justify-content: center; text-align: center; }
 @media (prefers-reduced-motion: reduce) { .div-fan i, .role-chips span, .trio > div, .glow-row > div { transition: none; opacity: 1; transform: none; } .pslide.is-current .div-fan { animation: none; } }
 
 /* ===== Презентация на телефоне вертикально: все в колонку ===== */
-.portrait .pslide { padding: 250px 0 120px; align-items: flex-start !important; overflow: hidden; }
+.portrait .pslide { padding: 190px 0 90px; align-items: center !important; overflow: hidden; }
 .portrait .pslide .wrap { max-width: 760px; padding: 0 !important; }
 .portrait .pslide.hero .wrap, .portrait .pslide.divider .wrap, .portrait .pslide.finale .wrap { padding-top: 40px !important; }
 .portrait .pslide h2.mega { font-size: 64px; }
@@ -1195,3 +1195,37 @@ html { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--fg) 30%,
   .rel-items { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .rel { opacity: 1; transform: none; transition: none; } }
+
+/* ---------- Телефон (до 720 px): нижняя панель разделов, плоский телефон без вращения ---------- */
+.tabbar { display: none; }
+@media (max-width: 720px) {
+  .nav .opt, .nav .nav-cta { display: none !important; }
+  .tabbar { position: fixed; z-index: 50; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px; border-radius: 24px;
+    background: color-mix(in srgb, var(--surface) 72%, transparent); border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+    backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 18px 40px -18px rgba(40, 15, 0, .45); }
+  .tabbar a { display: grid; justify-items: center; gap: 3px; padding: 8px 2px 7px; border-radius: 18px; color: var(--muted);
+    text-decoration: none; font-size: 11.5px; font-weight: 600; transition: background .25s ease, color .25s ease; }
+  .tabbar a svg { width: 22px; height: 22px; }
+  .tabbar a[aria-current="page"] { color: var(--ular); background: color-mix(in srgb, var(--ular) 12%, transparent); }
+  body { padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+  .to-top { bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* Первый экран: текст, две одинаковые кнопки магазинов, телефон целиком по центру */
+  .flow-hero { min-height: 0 !important; padding-block: 96px 36px !important; }
+  .flow-hero .wrap { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .flow-hero .stores { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .flow-hero .store { justify-content: center; padding-inline: 10px; }
+  .flow-hero .phone3d { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important;
+    transform: none !important; width: 100% !important; height: auto !important; margin: 4px 0 0 !important; }
+  .phone3d-tilt { transform: none !important; }
+  .phone3d-tilt .spin-body { transform: none !important; }
+  .phone3d-tilt .slice, .phone3d-tilt .edge, .phone3d-tilt .device-back, .phone3d-tilt .sheen, .phone3d-shadow { display: none !important; }
+  .flow-hero .phone3d-tilt .device { width: min(250px, 66vw) !important; }
+
+  /* Установка: на телефоне QR не нужен - те же ссылки кнопками магазинов */
+  .qr-cards { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .qr-card, .qr-card:nth-child(1), .qr-card:nth-child(2) { transform: none !important; padding: 14px 12px !important; }
+  .qr-card img { display: none !important; }
+}

@@ -511,6 +511,8 @@
   Array.prototype.forEach.call(document.querySelectorAll("[data-spin]"), function (box) {
     var body = box.querySelector(".spin-body");
     if (!body) return;
+    // На телефоне телефон плоский: без вращения, иначе касание забирает прокрутку страницы
+    if (window.matchMedia("(max-width: 720px)").matches) return;
     var ry = 0, rx = 0, vy = 0, drag = false, px = 0, py = 0, idleT = 0, raf = 0, lastT = 0;
     function apply() { body.style.setProperty("--ry", ry.toFixed(2) + "deg"); body.style.setProperty("--rx", rx.toFixed(2) + "deg"); }
     function tick(t) {
@@ -659,7 +661,8 @@
       var t = e.target, k = e.key;
       if (e.altKey || e.ctrlKey || e.metaKey) return;
       if (t && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName) && (k === " " || k === "Enter")) return;
-      if (t && t.classList && (t.classList.contains("strip") || t.classList.contains("route-scroll")) && (k === "ArrowLeft" || k === "ArrowRight")) return;
+      // Стрелки всегда листают слайды: раньше фокус, оставшийся на ленте экранов после щелчка, забирал их себе,
+      // и презентация «зависала». Ленту листают ее кнопки, перетаскивание и колесо.
       if (k === "ArrowRight" || k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) { e.preventDefault(); go(current + 1); }
       else if (k === "ArrowLeft" || k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) { e.preventDefault(); go(current - 1); }
       else if (k === "Home") { e.preventDefault(); go(0); }
@@ -682,7 +685,8 @@
     // Свайп на телефоне и планшете
     var sx = 0, sy = 0;
     var spinTouch = false;
-    window.addEventListener("touchstart", function (e) { spinTouch = !!(e.target.closest && e.target.closest("[data-spin]")); sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    // Свайп по ленте экранов, дорожной карте или вращаемому телефону листает их, а не слайды
+    window.addEventListener("touchstart", function (e) { spinTouch = !!(e.target.closest && e.target.closest("[data-spin], .strip, .route-scroll")); sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
     window.addEventListener("touchend", function (e) {
       if (spinTouch) return;
       var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
