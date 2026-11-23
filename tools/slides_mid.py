@@ -31,7 +31,8 @@ S.append(slide('compare', 'Сравнение', f'''<h2 class="mega">Свой к
       </div>''', 'center'))
 
 # 5. Раздел
-S.append(slide('part1', 'Что уже работает', '''<p class="num">01</p>
+S.append(slide('part1', 'Что уже работает', '''<div class="div-fan" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i></div>
+      <p class="num">01</p>
       <h2 class="big">Что уже работает</h2>
       <p class="lead">Приложение, учет организаций, инструменты отдела кадров</p>''', 'band divider'))
 
@@ -111,7 +112,8 @@ S.append(slide('admin', 'Для отдела кадров и администр�
       </div>''', 'center'))
 
 # 15. Раздел
-S.append(slide('part2', 'Что планируется', '''<p class="num">02</p>
+S.append(slide('part2', 'Что планируется', '''<div class="div-fan" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i></div>
+      <p class="num">02</p>
       <h2 class="big">Что планируется</h2>
       <p class="lead">Согласование, ЭЦП, новые заявления, веб-портал</p>''', 'band divider'))
 
@@ -138,4 +140,4 @@ S.append(slide('esign', 'Подпись ЭЦП', f'''<h2 class="mega">У док�
 # 18. Роли и веб-портал
 roles = [('megaphone', 'Маркетолог'), ('users', 'Отдел кадров'), ('monitor', 'Администратор'), ('route', 'Руководитель'), ('file', 'Делопроизводитель'), ('key', 'Директор')]
 S.append(slide('roles', 'Роли и веб-портал', f'''<h2 class="mega">Каждому — свои разделы</h2>
-      <div class="role-chips">{''.join(f'<span>{ico(i)}{n}</span>' for i, n in roles)}</div>''', 'center'))
+      <div class="role-chips">{''.join(f'<span style="--k:{k}">{ico(i)}{n}</span>' for k, (i, n) in enumerate(roles))}</div>''', 'center'))

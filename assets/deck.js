@@ -497,7 +497,11 @@
   // Холст заполняет весь экран: по короткой стороне 1600x900, по длинной растягивается - без полос по краям
   function fit() {
     var W = window.innerWidth, H = window.innerHeight, s, w, h;
-    if (W / H > 16 / 9) { s = H / 900; w = W / s; h = 900; } else { s = W / 1600; w = 1600; h = H / s; }
+    // Телефон в вертикальном положении: холст уже, слайды перестраиваются в колонку (класс portrait)
+    var portrait = W / H < 1;
+    document.body.classList.toggle("portrait", portrait);
+    if (portrait) { s = W / 860; w = 860; h = H / s; }
+    else if (W / H > 16 / 9) { s = H / 900; w = W / s; h = 900; } else { s = W / 1600; w = 1600; h = H / s; }
     stage.style.width = w + "px";
     stage.style.height = h + "px";
     stage.style.setProperty("--s", s);
