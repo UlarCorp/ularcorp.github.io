@@ -7,7 +7,7 @@
 - Презентация: `present/index.html` (https://ularcorp.github.io/present/) - слайды 16:9, стрелки, колесо, свайп, F - во весь экран, T - тема
 - Дорожная карта: слайд «Маршрут развития» и `roadmap.html`, данные — `assets/roadmap.json`, код — `assets/deck.js`
 - Стили: `assets/site.css` (цвета бренда, шрифт Onest вместо Aeonik)
-- Экраны: `assets/screens/` — из снимков для App Store (`Design/AppStore/Screenshots/RU`)
+- Экраны: `assets/app/light/` и `assets/app/dark/` — снимки приложения с демо-данными, сайт показывает их в своей теме
 
 Сборки нет: обычные HTML, CSS и JS, публикуются через GitHub Pages из ветки `main`: https://ularcorp.github.io/
 

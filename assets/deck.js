@@ -308,6 +308,31 @@
   var themeBtn = document.getElementById("theme");
   if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
 
+  // Снимки экранов приложения - в теме сайта: assets/app/light/* или assets/app/dark/*
+  var shotRe = /\/app\/(light|dark)\//;
+  function siteTheme() {
+    var t = document.documentElement.dataset.theme;
+    return t || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  }
+  function syncShots() {
+    var want = "/app/" + siteTheme() + "/";
+    Array.prototype.forEach.call(document.querySelectorAll("img"), function (img) {
+      var src = img.getAttribute("src") || "";
+      if (shotRe.test(src) && src.indexOf(want) < 0) img.setAttribute("src", src.replace(shotRe, want));
+    });
+  }
+  // Заранее грузим вторую тему, чтобы смена темы не показывала пустой экран телефона
+  function preloadOther() {
+    var other = siteTheme() === "dark" ? "/app/light/" : "/app/dark/";
+    Array.prototype.forEach.call(document.querySelectorAll("img"), function (img) {
+      if (shotRe.test(img.src)) (new Image()).src = img.src.replace(shotRe, other);
+    });
+  }
+  syncShots();
+  window.addEventListener("load", preloadOther);
+  new MutationObserver(syncShots).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncShots);
+
   // Стеклянная подложка в меню: переезжает к пункту под курсором, затем возвращается к текущему разделу
   Array.prototype.forEach.call(document.querySelectorAll(".nav"), function (nav) {
     var items = Array.prototype.slice.call(nav.querySelectorAll("a, .theme-btn"));
@@ -446,7 +471,7 @@
     }
     // Экран телефона кликабелен: нижние вкладки и плитки главного экрана переключают экран
     var img = box.querySelector(".device img"), screens = ["home", "salary", "pass", "vacation", "profile"];
-    var tiles = { "0,0": "salary", "1,0": "vacation", "0,1": "pass", "1,1": "profile" };
+    var tiles = { "0,0": "salary", "1,0": "vacation", "0,1": "pass", "1,1": "news" };
     function show(name) {
       if (!img || img.src.indexOf("/" + name + ".webp") >= 0) return;
       var next = img.src.replace(/[^/]+\.webp/, name + ".webp");
@@ -459,8 +484,8 @@
       if (x < 0 || x > 1 || y < 0 || y > 1) return;
       if (y > 0.9) { show(screens[Math.min(4, Math.floor(x * 5))]); return; }
       if (y < 0.1 && x < 0.2) { show("home"); return; }
-      if (img.src.indexOf("/home.webp") >= 0 && y > 0.4 && y < 0.82) {
-        var t = tiles[(x < 0.5 ? 0 : 1) + "," + (y < 0.61 ? 0 : 1)];
+      if (img.src.indexOf("/home.webp") >= 0 && y > 0.38 && y < 0.62) {
+        var t = tiles[(x < 0.5 ? 0 : 1) + "," + (y < 0.5 ? 0 : 1)];
         if (t) show(t);
       }
     }
