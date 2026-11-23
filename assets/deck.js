@@ -288,14 +288,61 @@
     : Promise.resolve();
 
   // Тема: переключатель запоминает выбор; без выбора - как в системе
-  function toggleTheme() {
+  // Новая тема расходится кругом от места нажатия (как в QazDesk); без поддержки браузера - сразу
+  function applyTheme() {
     var root = document.documentElement;
     var dark = root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
     root.dataset.theme = dark ? "light" : "dark";
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
   }
+  function toggleTheme(e) {
+    var btn = document.getElementById("theme");
+    if (!document.startViewTransition || reduce) { applyTheme(); return; }
+    var r = btn ? btn.getBoundingClientRect() : { left: innerWidth / 2, top: 0, width: 0, height: 0 };
+    var x = e && e.clientX ? e.clientX : r.left + r.width / 2, y = e && e.clientY ? e.clientY : r.top + r.height / 2;
+    var st = document.documentElement.style;
+    st.setProperty("--tx", x + "px"); st.setProperty("--ty", y + "px");
+    st.setProperty("--tr", Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + "px");
+    document.startViewTransition(applyTheme);
+  }
   var themeBtn = document.getElementById("theme");
   if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+
+  // Стеклянная подложка в меню: переезжает к пункту под курсором, затем возвращается к текущему разделу
+  Array.prototype.forEach.call(document.querySelectorAll(".nav"), function (nav) {
+    var items = Array.prototype.slice.call(nav.querySelectorAll("a"));
+    if (!items.length) return;
+    var pill = el("span", "nav-glass");
+    pill.setAttribute("aria-hidden", "true");
+    nav.insertBefore(pill, nav.firstChild);
+    var active = nav.querySelector('[aria-current="page"]');
+    function moveTo(a) {
+      if (!a || a.offsetParent === null) { pill.classList.remove("on"); return; }
+      pill.style.width = a.offsetWidth + "px";
+      pill.style.height = a.offsetHeight + "px";
+      pill.style.transform = "translate(" + a.offsetLeft + "px," + a.offsetTop + "px)";
+      pill.classList.add("on");
+    }
+    items.forEach(function (a) {
+      a.addEventListener("mouseenter", function () { moveTo(a); });
+      a.addEventListener("focus", function () { moveTo(a); });
+    });
+    nav.addEventListener("mouseleave", function () { moveTo(active); });
+    window.addEventListener("resize", function () { moveTo(active); });
+    // на главной текущий раздел - тот, что на экране
+    var map = items.map(function (a) { var h = a.getAttribute("href") || ""; return h.charAt(0) === "#" ? document.querySelector(h) : null; });
+    if (map.some(Boolean) && "IntersectionObserver" in window) {
+      var so = new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          var k = map.indexOf(en.target);
+          if (en.isIntersecting && k >= 0) { active = items[k]; if (!nav.matches(":hover")) moveTo(active); }
+          else if (!en.isIntersecting && active === items[k]) { active = null; if (!nav.matches(":hover")) moveTo(null); }
+        });
+      }, { rootMargin: "-40% 0px -50% 0px" });
+      map.forEach(function (t) { if (t) so.observe(t); });
+    }
+    moveTo(active);
+  });
 
   var fine = window.matchMedia("(pointer: fine)").matches;
 
@@ -373,8 +420,12 @@
       apply();
       raf = requestAnimationFrame(tick);
     }
+    var sx0 = 0, sy0 = 0;
+    box.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    Array.prototype.forEach.call(box.querySelectorAll("img"), function (im) { im.draggable = false; });
     box.addEventListener("pointerdown", function (e) {
-      drag = true; px = e.clientX; py = e.clientY; vy = 0;
+      e.preventDefault();
+      drag = true; px = e.clientX; py = e.clientY; vy = 0; sx0 = e.clientX; sy0 = e.clientY;
       box.classList.add("spinning"); box.setPointerCapture(e.pointerId);
       e.stopPropagation();
     });
@@ -385,11 +436,33 @@
       vy = dx * 0.6 / 16;
       apply();
     });
-    function end() {
+    function end(e) {
       if (!drag) return;
+      // короткое нажатие без поворота - это «тап» по экрану телефона
+      if (e && e.type === "pointerup" && Math.abs(e.clientX - sx0) < 6 && Math.abs(e.clientY - sy0) < 6 && Math.abs(ry % 360) < 30) tap(e);
       drag = false; box.classList.remove("spinning");
       idleT = performance.now() + (reduce ? 0 : 1800); lastT = 0;
       if (!raf) raf = requestAnimationFrame(tick);
+    }
+    // Экран телефона кликабелен: нижние вкладки и плитки главного экрана переключают экран
+    var img = box.querySelector(".device img"), screens = ["home", "salary", "pass", "vacation", "profile"];
+    var tiles = { "0,0": "salary", "1,0": "vacation", "0,1": "pass", "1,1": "profile" };
+    function show(name) {
+      if (!img || img.src.indexOf("/" + name + ".webp") >= 0) return;
+      var next = img.src.replace(/[^/]+\.webp/, name + ".webp");
+      img.classList.add("swap");
+      setTimeout(function () { img.src = next; img.onload = function () { img.classList.remove("swap"); }; }, 160);
+    }
+    function tap(e) {
+      if (!img) return;
+      var r = img.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      if (x < 0 || x > 1 || y < 0 || y > 1) return;
+      if (y > 0.9) { show(screens[Math.min(4, Math.floor(x * 5))]); return; }
+      if (y < 0.1 && x < 0.2) { show("home"); return; }
+      if (img.src.indexOf("/home.webp") >= 0 && y > 0.4 && y < 0.82) {
+        var t = tiles[(x < 0.5 ? 0 : 1) + "," + (y < 0.61 ? 0 : 1)];
+        if (t) show(t);
+      }
     }
     box.addEventListener("pointerup", end);
     box.addEventListener("pointercancel", end);
@@ -482,7 +555,7 @@
       else if (k === "Home") { e.preventDefault(); go(0); }
       else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
       else if (k === "f" || k === "F" || k === "а" || k === "А") { toggleFull(); }
-      else if (k === "t" || k === "T" || k === "е" || k === "Е") { toggleTheme(); }
+      else if (k === "t" || k === "T" || k === "е" || k === "Е") { toggleTheme(null); }
     });
 
     // Колесо и тачпад: один жест - один слайд (горизонтальную ленту экранов не трогаем)

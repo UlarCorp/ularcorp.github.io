@@ -911,3 +911,104 @@ footer .wrap { justify-content: center; text-align: center; }
 .rm-head p { max-width: 52em; }
 .trio > div, .glow-row > div { align-content: start; }
 .pslide.center .wrap > .carousel { align-self: stretch; width: 100%; }
+
+/* Смена темы: новая тема расходится кругом от кнопки */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) { animation: theme-in .75s cubic-bezier(.2,.8,.2,1); }
+@keyframes theme-in { from { clip-path: circle(0 at var(--tx, 50%) var(--ty, 0)); } to { clip-path: circle(var(--tr, 150vmax) at var(--tx, 50%) var(--ty, 0)); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-new(root) { animation: none; } }
+
+/* Стеклянная подложка в меню */
+.nav { position: relative; }
+.nav a { position: relative; z-index: 1; padding: 8px 14px; border-radius: 12px; }
+.nav a:hover, .nav a[aria-current="page"] { text-decoration: none; }
+.nav-glass { position: absolute; left: 0; top: 0; z-index: 0; border-radius: 12px; pointer-events: none; opacity: 0;
+  background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.38);
+  backdrop-filter: blur(14px) saturate(1.5); -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 10px 24px -14px rgba(0,0,0,.35);
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), width .45s cubic-bezier(.2,.8,.2,1), height .45s ease, opacity .3s ease; }
+.nav-glass.on { opacity: 1; }
+.nav { gap: 6px; }
+.nav .nav-cta { margin-left: 6px; }
+@media (prefers-reduced-motion: reduce) { .nav-glass { transition: opacity .2s ease; } }
+.status-line { grid-template-columns: 300px 90px 340px 90px 300px; }
+.st p { max-width: 300px; text-align: center; }
+
+/* Шаги и карточки под ними - каждая колонка по центру: кружок, подпись и карточка на одной оси */
+.chain.g4 li, .chain.g3 li { text-align: center; display: grid; justify-items: center; }
+.chain.g4 li:not(:last-child)::after, .chain.g3 li:not(:last-child)::after {
+  left: calc(50% + 40px); right: calc(-50% - 32px + 40px); top: 27px; }
+.cards.g4 .card, .cards.g3 .card, .cards.g2 .card { text-align: center; display: grid; justify-items: center; align-content: start; }
+.cards.g4 .card .ci, .cards.g3 .card .ci, .cards.g2 .card .ci { margin-bottom: 14px; }
+.cards.g4, .cards.g3, .cards.g2 { align-items: stretch; }
+/* Подписи шагов начинаются на одной высоте */
+.chain.g4 li, .chain.g3 li { align-content: start; }
+/* Статусы заявления стоят в тех же колонках, что значки под ними */
+.status-line { grid-template-columns: repeat(3, 340px); gap: 40px; align-items: start; }
+.status-line .st-link { display: none; }
+.status-line .st { position: relative; align-content: start; }
+.status-line .st:not(:last-of-type)::after { content: ""; position: absolute; top: 26px; left: calc(50% + 110px); width: 160px; height: 3px;
+  background: repeating-linear-gradient(90deg, var(--ular) 0 8px, transparent 8px 14px); background-size: 28px 3px; animation: build 1.2s linear infinite; }
+.trio > div { align-content: start; }
+/* В одном ряду подписи начинаются на одной высоте, тексты карточек - не длиннее двух строк */
+.cards.g4 .card p, .cards.g3 .card p { text-wrap: balance; }
+.trio p, .glow-row p, .st p, .chain p { text-wrap: balance; }
+.st p { white-space: nowrap; }
+/* Заголовок на каждом слайде на одной высоте: содержимое от верха, а не по центру - при листании ничего не прыгает */
+.present-page .pslide:not(.hero):not(.divider):not(.finale) { align-items: flex-start; padding-top: 150px; }
+.present-page .pslide.split-slide, .present-page .pslide .split { align-items: center; }
+.pslide .wrap > .kick:first-child { margin-top: -38px; }
+/* Слайды с телефоном: заголовок на той же высоте, что на остальных */
+.present-page .split { align-items: start; }
+.present-page .split > div:first-child { padding-top: 0; }
+.present-page .split .sphone { margin-top: -40px; }
+/* ЭЦП: значок рядом с заголовком, заголовок на общей высоте */
+.present-page #esign .sign-visual { position: absolute; top: 0; right: 0; width: 110px; height: 110px; border-radius: 34px; margin: 0; }
+.present-page #esign .sign-visual svg { width: 56px; height: 56px; }
+.present-page #esign .wrap { position: relative; }
+.present-page .fan { top: calc(46% - 300px); }
+/* Объем телефона: толщина корпуса видна при повороте */
+.spin-body { --th: 16px; }
+.spin-body > .device { transform: translateZ(calc(var(--th) / 2)); }
+.spin-body > .device-back { transform: rotateY(180deg) translateZ(calc(var(--th) / 2)); }
+.edge { position: absolute; display: block; background: linear-gradient(90deg, #121110, #3b3734 50%, #121110); pointer-events: none; }
+.edge.el, .edge.er { top: 46px; bottom: 46px; width: var(--th); transform: rotateY(90deg); }
+.edge.el { left: calc(var(--th) / -2); }
+.edge.er { right: calc(var(--th) / -2); }
+.edge.et, .edge.eb { left: 46px; right: 46px; height: var(--th); transform: rotateX(90deg); background: linear-gradient(180deg, #121110, #3b3734 50%, #121110); }
+.edge.et { top: calc(var(--th) / -2); }
+.edge.eb { bottom: calc(var(--th) / -2); }
+.device img { transition: opacity .16s ease; }
+.device img.swap { opacity: 0; }
+/* Слайды с телефоном: заголовок на общей высоте */
+.present-page .split > div:first-child > .kick:first-child { margin-top: -38px; }
+/* Страница дорожной карты: та же шапка, что на главной; оранжевая полоса - заголовок первого экрана */
+.rm-head { padding-bottom: 8px; }
+.rm-head .top .wrap { height: 72px; }
+.rm-head > .wrap { padding-block: 40px 64px; }
+.rm-head h1 { font-size: clamp(42px, 6vw, 84px); line-height: 1; letter-spacing: -0.025em; }
+.rm-head p { font-size: 21px; margin-top: 18px; opacity: .95; }
+.road-page { padding-block: 64px 40px; }
+.road-page .route-panel, .road-page .route-stats { max-width: 100%; }
+.present-page .pslide .split { align-items: start; }
+.present-page .pslide .split .sphone { margin-top: -60px; }
+
+/* ===== Единая верхняя панель на всех страницах ===== */
+.top .wrap, .ptop { height: 72px; }
+.brand svg, .ptop .brand svg { height: 30px; }
+.nav { gap: 4px; font-size: 16px; font-weight: 500; }
+.nav a, .nav-cta, .theme-btn { height: 40px; display: inline-flex; align-items: center; border-radius: 12px; }
+.nav a { padding: 0 14px; }
+/* подсветка раздела - легкая, без рамки; кнопки действий - стеклянные с рамкой */
+.nav-glass { background: rgba(255,255,255,.14); border: 0; box-shadow: none; height: 40px !important; }
+.nav-cta { padding: 0 18px; margin-left: 8px; font-weight: 600; }
+.theme-btn { width: 40px; justify-content: center; margin-left: 4px; }
+.ptop { padding-top: 0; padding-bottom: 0; }
+.ptop .pager { height: 48px; padding: 4px; border-radius: 14px; }
+.ptop .pager button { width: 40px; height: 40px; border-radius: 10px; }
+.ptop { padding-left: max(24px, 5vw); padding-right: max(24px, 5vw); }
+/* Картинку экрана нельзя «утащить» мышью - телефон только вращается */
+.device img, .device-back svg, [data-spin] img { -webkit-user-drag: none; user-drag: none; user-select: none; -webkit-user-select: none; pointer-events: none; }
+[data-spin] .device { pointer-events: auto; }
+/* Шапка на всех страницах и в презентации - во всю ширину с одинаковыми полями: логотип и кнопки всегда на одних местах */
+.top .wrap { max-width: none; padding-left: max(24px, 5vw); padding-right: max(24px, 5vw); }

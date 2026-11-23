@@ -6,15 +6,15 @@ def bubble(q, a, k):
         </div>'''
 
 # 2. О продукте - крупное утверждение по центру и три аудитории
-S.append(slide('about', 'О продукте', f'''<h2 class="mega">Все, что сотрудник спрашивает у кадров, — в его телефоне</h2>
+S.append(slide('about', 'О продукте', f'''<h2 class="mega">Ответы на кадровые вопросы — в телефоне сотрудника</h2>
       <div class="trio">
-        <div><span class="bigi">{ico('globe')}</span><b>Для всех</b><p>Новости, калькулятор, календарь — без входа</p></div>
+        <div><span class="bigi">{ico('globe')}</span><b>Для всех</b><p>Новости и калькулятор без входа</p></div>
         <div><span class="bigi">{ico('user')}</span><b>Для сотрудников</b><p>Зарплата, отпуск, пропуск, справки</p></div>
-        <div><span class="bigi">{ico('users')}</span><b>Для кадров</b><p>Доступ, коды, данные организации</p></div>
+        <div><span class="bigi">{ico('users')}</span><b>Для отдела кадров</b><p>Доступ, коды, данные организации</p></div>
       </div>''', 'center'))
 
 # 3. Зачем - переписка
-S.append(slide('why', 'Зачем', f'''<h2 class="mega">Вопросы в кадры —<br>ответы в телефоне</h2>
+S.append(slide('why', 'Зачем', f'''<h2 class="mega">Вопрос в отдел кадров —<br>ответ в приложении</h2>
       <div class="chats">
         {bubble('Сколько дней отпуска у меня осталось?', '18,5 дня. История отпусков — в разделе «Отпуск»', 0)}
         {bubble('Нужна справка с места работы', 'Заказ в приложении, готовый PDF на бланке', 1)}
@@ -33,11 +33,11 @@ S.append(slide('compare', 'Сравнение', f'''<h2 class="mega">Свой к
 # 5. Раздел
 S.append(slide('part1', 'Что уже работает', '''<p class="num">01</p>
       <h2 class="big">Что уже работает</h2>
-      <p class="lead">Приложение для iOS и Android, связь с учетом организаций и инструменты для кадров</p>''', 'band divider'))
+      <p class="lead">Приложение, учет организаций, инструменты отдела кадров</p>''', 'band divider'))
 
 def split(sid, title, kick, h, points, ph):
     pts = ''.join(f'<li><span class="ci">{ico(i)}</span><div><b>{t}</b><p>{d}</p></div></li>' for i, t, d in points)
-    return slide(sid, title, f'''<div class="split"><div><p class="kick">{kick}</p><h2>{h}</h2><ul class="points">{pts}</ul></div>{phone(ph)}</div>''')
+    return slide(sid, title, f'''<div class="split"><div><h2>{h}</h2><ul class="points">{pts}</ul></div>{phone(ph)}</div>''')
 
 S.append(split('nologin', 'Без входа', 'Без входа', 'Полезно с первой минуты', [
     ('news', 'Новости компаний', 'Посты с картинками'),
@@ -57,18 +57,18 @@ S.append(split('pass', 'Пропуск и скидки', 'Пропуск и ск
     ('user', 'Профиль', 'Свое фото для пропуска')], 'pass'))
 
 # 10. Заявления - путь заявления статусами + справка
-S.append(slide('requests', 'Заявления и справки', f'''<h2 class="mega">Заявление — в пару касаний</h2>
+S.append(slide('requests', 'Заявления и справки', f'''<h2 class="mega">Заявления и справки в приложении</h2>
       <div class="status-line">
-        <div class="st"><span class="pill gray">Черновик</span><p>Сотрудник подает</p></div>
+        <div class="st"><span class="pill gray">Подано</span><p>Сотрудник подает заявление</p></div>
         <span class="st-link"></span>
-        <div class="st"><span class="pill sun">На согласовании</span><p>Кадры проверяют</p></div>
+        <div class="st"><span class="pill sun">На согласовании</span><p>Руководитель, отдел кадров, директор</p></div>
         <span class="st-link"></span>
-        <div class="st"><span class="pill green">Согласовано</span><p>Push на телефон</p></div>
+        <div class="st"><span class="pill green">Согласовано</span><p>Уведомление сотруднику</p></div>
       </div>
       <div class="trio small">
-        <div><span class="bigi">{ico('file')}</span><b>Справка с места работы</b><p>Обычная или с зарплатой</p></div>
+        <div><span class="bigi">{ico('file')}</span><b>Справка с места работы</b><p>С указанием зарплаты или без</p></div>
         <div><span class="bigi">{ico('shield')}</span><b>Официальный бланк</b><p>Номер, печать, подпись</p></div>
-        <div><span class="bigi">{ico('download')}</span><b>PDF в телефоне</b><p>Скачать или отправить</p></div>
+        <div><span class="bigi">{ico('download')}</span><b>Документ в PDF</b><p>Скачать или отправить</p></div>
       </div>''', 'center'))
 
 # 11. Экраны
@@ -95,17 +95,17 @@ S.append(slide('arch', 'Как устроено', f'''<h2 class="mega">Один 
 # 13. Безопасность - темный слайд
 S.append(slide('security', 'Безопасность', f'''<h2 class="mega">Доступ под контролем</h2>
       <div class="glow-row">
-        <div>{ico('key')}<b>Код от кадров</b><p>Регистрация только по личному коду</p></div>
+        <div>{ico('key')}<b>Код доступа</b><p>Регистрация по личному коду</p></div>
         <div>{ico('face')}<b>Face ID и код</b><p>Быстрый и защищенный вход</p></div>
         <div>{ico('users')}<b>Уволенные</b><p>Доступ закрывается сам</p></div>
         <div>{ico('log')}<b>Журнал</b><p>Попытки подбора видны</p></div>
       </div>''', 'center dark'))
 
 # 14. Для кадров
-S.append(slide('admin', 'Для кадров и администраторов', f'''<h2 class="mega">Инструменты для кадров</h2>
+S.append(slide('admin', 'Для отдела кадров и администраторов', f'''<h2 class="mega">Инструменты для отдела кадров</h2>
       <div class="trio four">
         <div><span class="bigi">{ico('key')}</span><b>Коды доступа</b><p>Выдача и перевыпуск</p></div>
-        <div><span class="bigi">{ico('monitor')}</span><b>Глазами сотрудника</b><p>Видно то же, что в приложении</p></div>
+        <div><span class="bigi">{ico('monitor')}</span><b>Глазами сотрудника</b><p>Как в приложении</p></div>
         <div><span class="bigi">{ico('megaphone')}</span><b>Новости и партнеры</b><p>Публикация для сотрудников</p></div>
         <div><span class="bigi">{ico('download')}</span><b>Памятка с QR</b><p>Для новых сотрудников</p></div>
       </div>''', 'center'))
@@ -113,24 +113,23 @@ S.append(slide('admin', 'Для кадров и администраторов',
 # 15. Раздел
 S.append(slide('part2', 'Что планируется', '''<p class="num">02</p>
       <h2 class="big">Что планируется</h2>
-      <p class="lead">Согласование в телефоне, подпись ЭЦП, новые виды заявлений, роли и веб-портал</p>''', 'band divider'))
+      <p class="lead">Согласование, ЭЦП, новые заявления, веб-портал</p>''', 'band divider'))
 
 # 16. Согласование - 4 шага и 4 карточки ровно под ними
-steps = [('Заявление', 'создает сотрудник'), ('Согласование', 'руководители'), ('Кадры', 'проверка и оформление'), ('Директор', 'подписывает ЭЦП')]
+steps = [('Заявление', 'подает сотрудник'), ('Руководители', 'согласование по маршруту'), ('Отдел кадров', 'проверка и оформление'), ('Директор', 'подписание ЭЦП')]
 st = ''.join(f'<li><span class="sn">{i}</span><b>{t}</b><p>{d}</p></li>' for i, (t, d) in enumerate(steps, 1))
 S.append(slide('approval', 'Согласование', f'''<h2 class="mega">Согласование — в телефоне</h2>
       <ol class="chain g4">{st}</ol>
       <div class="cards g4">
-        {card('route', 'Статус виден', 'Сотрудник видит, на каком шаге заявление')}
-        {card('phone', 'Дополнительно', 'Основное место согласования — 1С:Документооборот')}
-        {card('x', 'Отказ с причиной', 'Причина приходит сотруднику')}
-        {card('swap', 'Замещение', 'На время отпуска — заместитель')}
+        {card('route', 'Статус в приложении', 'Этап согласования виден сотруднику')}
+        {card('phone', 'Дополнительный канал', 'Основное место — 1С:Документооборот')}
+        {card('x', 'Отказ с причиной', 'Причина доводится до сотрудника')}
+        {card('swap', 'Замещение', 'В отсутствие руководителя — заместитель')}
       </div>''', 'center'))
 
 # 17. ЭЦП - темный слайд с крупным образом
 S.append(slide('esign', 'Подпись ЭЦП', f'''<div class="sign-visual" aria-hidden="true">{ico('shield')}</div>
       <h2 class="mega">У документа — официальная сила</h2>
-      <p class="intro">Приказы и кадровые документы подписываются ЭЦП в 1С:Документообороте — без бумаги и визитов в кадры.</p>
       <div class="glow-row three">
         <div>{ico('key')}<b>Своим ключом</b><p>Каждый участник маршрута</p></div>
         <div>{ico('check')}<b>Проверяемо</b><p>Кто и когда подписал</p></div>
@@ -138,7 +137,6 @@ S.append(slide('esign', 'Подпись ЭЦП', f'''<div class="sign-visual" ar
       </div>''', 'center dark'))
 
 # 18. Роли и веб-портал
-roles = [('megaphone', 'Маркетолог'), ('users', 'Кадры'), ('monitor', 'Администратор'), ('route', 'Руководитель'), ('file', 'Делопроизводитель'), ('key', 'Директор')]
+roles = [('megaphone', 'Маркетолог'), ('users', 'Отдел кадров'), ('monitor', 'Администратор'), ('route', 'Руководитель'), ('file', 'Делопроизводитель'), ('key', 'Директор')]
 S.append(slide('roles', 'Роли и веб-портал', f'''<h2 class="mega">Каждому — свои разделы</h2>
-      <p class="intro">Один вход по ИИН и паролю, в приложении и в веб-портале. Набор разделов зависит от роли.</p>
       <div class="role-chips">{''.join(f'<span>{ico(i)}{n}</span>' for i, n in roles)}</div>''', 'center'))
