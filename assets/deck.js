@@ -354,6 +354,55 @@
     strip.addEventListener("click", function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
   });
 
+  // Зажать телефон и покрутить: вращение за указателем, инерция, затем плавный возврат лицом к зрителю
+  Array.prototype.forEach.call(document.querySelectorAll("[data-spin]"), function (box) {
+    var body = box.querySelector(".spin-body");
+    if (!body) return;
+    var ry = 0, rx = 0, vy = 0, drag = false, px = 0, py = 0, idleT = 0, raf = 0, lastT = 0;
+    function apply() { body.style.setProperty("--ry", ry.toFixed(2) + "deg"); body.style.setProperty("--rx", rx.toFixed(2) + "deg"); }
+    function tick(t) {
+      raf = 0;
+      if (drag) return;
+      var dt = lastT ? Math.min(40, t - lastT) : 16; lastT = t;
+      if (Math.abs(vy) > 0.02) { ry += vy * dt; vy *= Math.pow(0.94, dt / 16); }
+      else if (t > idleT) {           // вернуться к ближайшему «лицом к зрителю»
+        var target = Math.round(ry / 360) * 360;
+        ry += (target - ry) * 0.08; rx += (0 - rx) * 0.08;
+        if (Math.abs(target - ry) < 0.1 && Math.abs(rx) < 0.1) { ry = 0; rx = 0; apply(); lastT = 0; return; }
+      }
+      apply();
+      raf = requestAnimationFrame(tick);
+    }
+    box.addEventListener("pointerdown", function (e) {
+      drag = true; px = e.clientX; py = e.clientY; vy = 0;
+      box.classList.add("spinning"); box.setPointerCapture(e.pointerId);
+      e.stopPropagation();
+    });
+    box.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var dx = e.clientX - px, dy = e.clientY - py; px = e.clientX; py = e.clientY;
+      ry += dx * 0.6; rx = Math.max(-25, Math.min(25, rx - dy * 0.3));
+      vy = dx * 0.6 / 16;
+      apply();
+    });
+    function end() {
+      if (!drag) return;
+      drag = false; box.classList.remove("spinning");
+      idleT = performance.now() + (reduce ? 0 : 1800); lastT = 0;
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+    box.addEventListener("pointerup", end);
+    box.addEventListener("pointercancel", end);
+  });
+
+  // Кнопка «Наверх»: появляется после первого экрана
+  var toTop = document.getElementById("toTop");
+  if (toTop) {
+    var onScroll = function () { toTop.classList.toggle("show", window.scrollY > window.innerHeight * 0.8); };
+    window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
+  }
+
   var isPresent = document.body.classList.contains("present-page");
 
   // ---------- Главная: плавное появление разделов и запуск маршрута ----------
@@ -405,7 +454,7 @@
       count.textContent = (i + 1) + " / " + slides.length;
       document.getElementById("prev").disabled = i === 0;
       document.getElementById("next").disabled = i === slides.length - 1;
-      document.body.classList.toggle("on-band", slides[i].classList.contains("band"));
+      document.body.classList.toggle("on-band", slides[i].classList.contains("band") || slides[i].classList.contains("dark"));
       if (bar) bar.style.transform = "scaleX(" + ((i + 1) / slides.length) + ")";
       history.replaceState(null, "", "#" + slides[i].id);
       if (route && slides[i].contains(routeHost)) route.play();
@@ -449,8 +498,10 @@
 
     // Свайп на телефоне и планшете
     var sx = 0, sy = 0;
-    window.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    var spinTouch = false;
+    window.addEventListener("touchstart", function (e) { spinTouch = !!(e.target.closest && e.target.closest("[data-spin]")); sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
     window.addEventListener("touchend", function (e) {
+      if (spinTouch) return;
       var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
       if (Math.max(Math.abs(dx), Math.abs(dy)) < 50) return;
       if (Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1)); else go(current + (dy < 0 ? 1 : -1));
