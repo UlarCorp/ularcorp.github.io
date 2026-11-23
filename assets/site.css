@@ -1012,3 +1012,14 @@ footer .wrap { justify-content: center; text-align: center; }
 [data-spin] .device { pointer-events: auto; }
 /* Шапка на всех страницах и в презентации - во всю ширину с одинаковыми полями: логотип и кнопки всегда на одних местах */
 .top .wrap { max-width: none; padding-left: max(24px, 5vw); padding-right: max(24px, 5vw); }
+/* «Темные» слайды следуют теме: в светлой - светлые, со светящимися оранжевыми значками */
+.pslide.dark { background: radial-gradient(900px 600px at 50% 0%, color-mix(in srgb, var(--ular) 10%, transparent), transparent 70%); color: var(--fg); }
+.pslide.dark .intro, .glow-row p { color: var(--muted); }
+.glow-row svg { color: var(--ular); filter: drop-shadow(0 0 14px rgba(255, 90, 20, .35)); }
+:root[data-theme="dark"] .pslide.dark { background: radial-gradient(900px 600px at 50% 0%, #3a2418, transparent 70%), #141312; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pslide.dark { background: radial-gradient(900px 600px at 50% 0%, #3a2418, transparent 70%), #141312; } }
+/* Ряд крупных значков занимает слайд, а не только верхнюю треть */
+.glow-row { margin-top: 70px; gap: 48px; }
+.glow-row svg { width: 92px; height: 92px; margin-bottom: 14px; }
+.glow-row b { font-size: 30px; }
+.glow-row p { font-size: 21px; }

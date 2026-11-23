@@ -128,12 +128,11 @@ S.append(slide('approval', 'Согласование', f'''<h2 class="mega">Со
       </div>''', 'center'))
 
 # 17. ЭЦП - темный слайд с крупным образом
-S.append(slide('esign', 'Подпись ЭЦП', f'''<div class="sign-visual" aria-hidden="true">{ico('shield')}</div>
-      <h2 class="mega">У документа — официальная сила</h2>
+S.append(slide('esign', 'Подпись ЭЦП', f'''<h2 class="mega">У документа — официальная сила</h2>
       <div class="glow-row three">
         <div>{ico('key')}<b>Своим ключом</b><p>Каждый участник маршрута</p></div>
         <div>{ico('check')}<b>Проверяемо</b><p>Кто и когда подписал</p></div>
-        <div>{ico('phone')}<b>eGov Mobile</b><p>Рассматриваем для телефона</p></div>
+        <div>{ico('phone')}<b>eGov Mobile</b><p>Рассматриваем</p></div>
       </div>''', 'center dark'))
 
 # 18. Роли и веб-портал

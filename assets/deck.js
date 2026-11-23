@@ -527,7 +527,7 @@
       count.textContent = (i + 1) + " / " + slides.length;
       document.getElementById("prev").disabled = i === 0;
       document.getElementById("next").disabled = i === slides.length - 1;
-      document.body.classList.toggle("on-band", slides[i].classList.contains("band") || slides[i].classList.contains("dark"));
+      document.body.classList.toggle("on-band", slides[i].classList.contains("band"));
       if (bar) bar.style.transform = "scaleX(" + ((i + 1) / slides.length) + ")";
       history.replaceState(null, "", "#" + slides[i].id);
       if (route && slides[i].contains(routeHost)) route.play();
