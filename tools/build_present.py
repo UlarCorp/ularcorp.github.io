@@ -40,8 +40,11 @@ def ico(n):
 def card(i, t, d):
     return f'<div class="card"><span class="ci">{ico(i)}</span><b>{t}</b><p>{d}</p></div>'
 
+def device(name, cls=''):
+    return f'<div class="device {cls}"><img src="../assets/app/{name}.webp" alt="" width="620" height="1342"></div>'
+
 def phone(name):
-    return f'<div class="sphone"><img src="../assets/screens/phone_{name}.webp" alt="" width="520" height="944"></div>'
+    return f'<div class="sphone">{device(name)}</div>'
 
 def slide(sid, title, body, cls='', kick=''):
     k = f'<p class="kick">{kick}</p>' if kick else ''
@@ -65,9 +68,9 @@ S.append(slide('start', 'Кабинет сотрудника', f'''<div class="t
         </div>
       </div>
       <div class="fan" aria-hidden="true">
-        <img src="../assets/screens/phone_02_salary.webp" alt="" width="520" height="944">
-        <img src="../assets/screens/phone_04_vacation.webp" alt="" width="520" height="944">
-        <img src="../assets/screens/phone_01_home.webp" alt="" width="520" height="944">
+        {device('salary')}
+        {device('vacation')}
+        {device('home')}
       </div>''', 'band hero'))
 
 # 2. О продукте
@@ -113,19 +116,19 @@ def split(sid, title, kick, h, points, ph):
 S.append(split('nologin', 'Без входа', 'Без входа', 'Полезно с первой минуты', [
     ('news', 'Новости холдинга', 'Посты с картинками от компаний холдинга'),
     ('calc', 'Калькулятор налогов РК', 'ИП и ТОО, прямой и обратный расчет'),
-    ('cal', 'Производственный календарь', 'Праздники и переносы')], '07_news'))
+    ('cal', 'Производственный календарь', 'Праздники и переносы')], 'news'))
 S.append(split('home', 'Главный экран', 'После входа по ИИН', 'Все важное на главном экране', [
     ('sun', 'Стаж, отпуск, зарплата', 'Видно сразу при открытии'),
     ('user', 'Профиль', 'Личные и рабочие данные'),
-    ('users', 'Для всех компаний холдинга', 'Один вход по ИИН, где бы вы ни работали')], '01_home'))
+    ('users', 'Для всех компаний холдинга', 'Один вход по ИИН, где бы вы ни работали')], 'home'))
 S.append(split('salary', 'Зарплата и отпуск', 'Зарплата и отпуск', 'Без вопросов в бухгалтерию и кадры', [
     ('wallet', 'Расчетный листок', 'Начисления и удержания по месяцам, можно скачать PDF'),
     ('db', 'Данные из 1С:ЗУП', 'Берутся в момент открытия — без копий и расхождений'),
-    ('cal', 'Остаток отпуска', 'Сколько дней осталось и вся история отпусков')], '02_salary'))
+    ('cal', 'Остаток отпуска', 'Сколько дней осталось и вся история отпусков')], 'salary'))
 S.append(split('pass', 'Пропуск и скидки', 'Пропуск и скидки', 'Пропуск и скидки всегда с собой', [
     ('id', 'Электронный пропуск', 'Фото, организация, должность, номер и срок действия'),
     ('tag', 'Скидки у партнеров', 'Магазины и сервисы по категориям, экран на кассе'),
-    ('user', 'Профиль', 'Свое фото для пропуска и профиля')], '05_partners'))
+    ('user', 'Профиль', 'Свое фото для пропуска и профиля')], 'pass'))
 S.append(slide('requests', 'Заявления и справки', f'''<h2>Заявления и справки — из приложения</h2>
       <div class="cards c3 steps3">
         {card('file', 'Подайте', 'Заявление на отпуск или заказ справки в пару касаний')}
@@ -139,8 +142,9 @@ S.append(slide('requests', 'Заявления и справки', f'''<h2>За�
       </div>''', kick='Заявления и справки'))
 
 # 11. Экраны
-figs = ''.join(f'<figure><img src="../assets/screens/{n}.webp" alt="" width="600" height="1300"></figure>' for n in
-               ('01_home', '02_salary', '03_pass', '04_vacation', '05_partners', '06_calculator', '07_news', '08_calendar'))
+figs = ''.join(f'<figure>{device(n)}<figcaption>{c}</figcaption></figure>' for n, c in
+               (('home', 'Главная'), ('salary', 'Зарплата'), ('vacation', 'Отпуск'), ('pass', 'Пропуск'), ('profile', 'Профиль'),
+                ('news', 'Новости'), ('notifications', 'Уведомления'), ('calculator', 'Калькулятор'), ('calendar', 'Календарь')))
 S.append(slide('screens', 'Экраны', f'''<h2>Как это выглядит</h2>
       <div class="strip" tabindex="0" aria-label="Экраны приложения">{figs}</div>''', kick='Экраны'))
 
@@ -238,7 +242,7 @@ S.append(slide('end', 'Скачать', f'''<div class="finale-grid">
         <div class="finale-text">
           <h2 class="big">Меньше вопросов в кадры. Меньше бумаги.</h2>
           <p class="lead">Сотрудник сам видит свои данные, кадры настраивают процессы у себя, документы подписываются ЭЦП.</p>
-          <p class="credit">QazDefense 2026</p>
+          <p class="credit">© QazDefense 2026</p>
         </div>
         <div class="qr-cards">
           <a class="qr-card" href="https://apps.apple.com/kz/app/ular/id6813023469" rel="noopener"><img src="../assets/qr-ios.svg" alt="QR-код для App Store" width="160" height="160"><span class="qr-meta">{apple}<b>App Store</b><span>iPhone</span></span></a>
@@ -268,6 +272,7 @@ html = f'''<!doctype html>
 <header class="ptop">
   <a class="brand" href="../" aria-label="Сайт Кабинета сотрудника">{LOGO}</a>
   <nav class="pager" aria-label="Слайды">
+    {btn('first', 'К первому слайду', '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>')}
     {btn('prev', 'Предыдущий слайд', '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>')}
     <span id="count" aria-live="polite">1 / 1</span>
     {btn('next', 'Следующий слайд', '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>')}

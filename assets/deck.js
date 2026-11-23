@@ -412,6 +412,8 @@
       document.dispatchEvent(new Event("slidechange"));
     }
 
+    var first = document.getElementById("first");
+    if (first) first.addEventListener("click", function () { go(0); });
     document.getElementById("prev").addEventListener("click", function () { go(current - 1); });
     document.getElementById("next").addEventListener("click", function () { go(current + 1); });
     document.getElementById("full").addEventListener("click", toggleFull);
@@ -454,7 +456,11 @@
       if (Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1)); else go(current + (dy < 0 ? 1 : -1));
     }, { passive: true });
 
-    var start = location.hash ? slides.findIndex(function (s) { return "#" + s.id === location.hash; }) : 0;
-    go(Math.max(start, 0));
+    function fromHash() {
+      var k = location.hash ? slides.findIndex(function (s) { return "#" + s.id === location.hash; }) : 0;
+      go(Math.max(k, 0));
+    }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
   });
 })();
