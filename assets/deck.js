@@ -338,6 +338,14 @@
     document.getElementById("prev").addEventListener("click", function () { go(current - 1); });
     document.getElementById("next").addEventListener("click", function () { go(current + 1); });
     document.getElementById("full").addEventListener("click", toggleFull);
+    // Тема: переключатель запоминает выбор; без выбора - как в системе
+    function toggleTheme() {
+      var root = document.documentElement;
+      var dark = root.dataset.theme ? root.dataset.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.dataset.theme = dark ? "light" : "dark";
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    }
+    document.getElementById("theme").addEventListener("click", toggleTheme);
     function toggleFull() {
       if (document.fullscreenElement) { document.exitFullscreen(); return; }
       var p = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
@@ -358,6 +366,7 @@
       else if (k === "Home") { e.preventDefault(); go(0); }
       else if (k === "End") { e.preventDefault(); go(slides.length - 1); }
       else if (k === "f" || k === "F" || k === "а" || k === "А") { toggleFull(); }
+      else if (k === "t" || k === "T" || k === "е" || k === "Е") { toggleTheme(); }
     });
 
     var start = location.hash ? slides.findIndex(function (s) { return "#" + s.id === location.hash; }) : 0;

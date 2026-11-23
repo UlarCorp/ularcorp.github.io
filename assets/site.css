@@ -17,19 +17,12 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1F1E1C;
-    --surface: #2A2826;
-    --fg: #F1F0EA;
-    --muted: #A8A39B;
-    --line: #3C3936;
-    color-scheme: dark;
-  }
+  :root:not([data-theme="light"]) { --bg: #1F1E1C; --surface: #2A2826; --fg: #F1F0EA; --muted: #A8A39B; --line: #3C3936; color-scheme: dark; }
 }
+:root[data-theme="dark"] { --bg: #1F1E1C; --surface: #2A2826; --fg: #F1F0EA; --muted: #A8A39B; --line: #3C3936; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-html:has(.deck-page) { scroll-snap-type: y mandatory; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 400 17px/1.55 var(--font); }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
@@ -66,7 +59,7 @@ a:focus-visible, button:focus-visible, .strip:focus-visible { outline: 2px solid
 
 /* Слайды */
 .slide {
-  min-height: 100vh; min-height: 100svh; scroll-snap-align: start; scroll-snap-stop: always;
+  min-height: 100vh; min-height: 100svh;
   display: flex; align-items: center; padding-block: calc(var(--top) + 24px) 96px; overflow: hidden;
 }
 .slide h2 { margin: 0 0 12px; font-size: clamp(32px, 4.2vw, 54px); line-height: 1.06; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; }
@@ -295,7 +288,6 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .steps, .facts { grid-template-columns: 1fr 1fr; gap: 24px; }
   .route-stats { grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
   .stat span { font-size: 13px; }
-  .slide { scroll-snap-stop: normal; }
 }
 @media (max-width: 560px) {
   .nav { gap: 16px; font-size: 15px; }
@@ -360,3 +352,27 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 .route-panel .card-inner li { break-inside: avoid; margin-bottom: 8px; }
 @media (min-width: 1100px) { .route-slide .route-panel .card-inner ul { columns: 3; column-gap: 28px; } }
 @media (max-width: 700px) { .route-panel .card-inner ul, .route-slide .route-panel .card-inner ul { columns: 1; } }
+
+/* Невысокие экраны ноутбуков: слайд помещается целиком */
+@media (max-height: 820px) and (min-width: 901px) {
+  :root { --top: 60px; }
+  .slide { padding-block: calc(var(--top) + 12px) 72px; }
+  .slide h2 { font-size: clamp(28px, 3.4vw, 44px); margin-bottom: 8px; }
+  .slide .intro { font-size: 17px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(40px, 5.4vw, 70px); }
+  .lead { font-size: 18px; margin-top: 16px; }
+  .stores { margin-top: 22px; }
+  .fan { height: min(480px, 60vh); }
+  .task { padding: 12px 0; }
+  .task h3 { font-size: 18px; }
+  .task p { font-size: 15px; }
+  .strip img { height: min(54vh, 520px); }
+  .steps li::before { width: 50px; height: 50px; font-size: 22px; margin-bottom: 14px; }
+  .route-slide .route-tools { top: -54px; }
+  .route-panel .route-scroll { padding-top: 2px; }
+  .route-svg { max-height: 220px; }
+  .route-panel .route-card, .route-slide .route-panel .route-card { padding: 12px 24px 12px; }
+  .route-panel .card-inner h3 { font-size: 18px; margin-bottom: 6px; }
+  .route-slide .route-panel .card-inner li p { font-size: 13px; }
+  .route-panel .card-inner li { margin-bottom: 5px; }
+}

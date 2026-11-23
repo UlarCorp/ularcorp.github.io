@@ -8,7 +8,7 @@
 - Стили: `assets/site.css` (цвета бренда, шрифт Onest вместо Aeonik)
 - Экраны: `assets/screens/` — из снимков для App Store (`Design/AppStore/Screenshots/RU`)
 
-Сборки нет: обычные HTML, CSS и JS, публикуются через GitHub Pages из ветки `main`.
+Сборки нет: обычные HTML, CSS и JS, публикуются через GitHub Pages из ветки `main`: https://ularcorp.github.io/
 
 ## Как обновить дорожную карту
 
