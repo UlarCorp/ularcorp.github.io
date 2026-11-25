@@ -1257,12 +1257,12 @@ html.i18n-wait body, html.lang-fade body { opacity: 0; }
 @media print { .lang-menu, .lang-btn { display: none !important; } }
 
 /* Ролик о приложении: плеер и главы */
-.player { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; align-items: start; }
+.player { max-width: 960px; }
 .player-screen { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #1F1E1C;
   box-shadow: 0 24px 60px -24px rgba(80, 20, 0, .45); }
 .player-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #1F1E1C; }
 .player.is-started .player-screen video { object-fit: contain; }
-.player-start { position: absolute; left: calc(6.2% + 44px); top: 84%; width: 88px; height: 88px; margin: -44px 0 0 -44px; display: grid; place-items: center;
+.player-start { position: absolute; left: calc(6.2% + 44px); top: 86.5%; width: 88px; height: 88px; margin: -44px 0 0 -44px; display: grid; place-items: center;
   border: 0; border-radius: 50%; background: var(--ular); color: #fff; cursor: pointer;
   box-shadow: 0 12px 32px rgba(80, 20, 0, .4); transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .35s ease, visibility .35s; }
 .player-start svg { width: 38px; height: 38px; margin-left: 6px; }
