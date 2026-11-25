@@ -1,5 +1,5 @@
 {
-  "note": "Изменения по релизам, новые сверху. status: soon - готовится, released - уже у сотрудников. Пункт: [тип, название, пояснение], тип new - новое, better - улучшение, fix - исправление.",
+  "note": "Изменения по релизам, новые сверху. status: soon - готовится, released - уже у сотрудников. Пункт: [тип, название, пояснение], тип new - новое, better - улучшение, fix - исправление. kk и en - перевод релиза: date, title и items [название, пояснение] в том же порядке, что и русские пункты.",
   "releases": [
     {
       "version": "1.1.0",
@@ -18,7 +18,41 @@
         ["better", "Новый вид пропуска", "Фото в центре, данные крупно, удобный вид при повороте телефона"],
         ["better", "Быстрый первый вход", "Приложение не ждет 10-15 секунд после перерыва"],
         ["better", "Отключение уволенных", "Уволенный теряет доступ автоматически"]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы желтоқсан",
+        "title": "Код және биометрия арқылы кіру",
+        "items": [
+          ["Кіру коды", "Әр кірген сайын құпиясөздің орнына қысқа код"],
+          ["Face ID және саусақ ізі", "Бет немесе саусақ ізі арқылы кіру"],
+          ["Үзілістен кейін бұғаттау", "Қосымша қайтадан код немесе биометрия сұрайды"],
+          ["Кодты ауыстыру және қалпына келтіру", "Код баптауларда ауыстырылады, ұмытылған код қалпына келтіріледі"],
+          ["Менің өтініштерім", "Барлық өтініштер мен анықтамалар мәртебелерімен бір тізімде"],
+          ["Өтінішті болдырмау", "Өтініш рәсімделгенге дейін оны болдырмауға болады"],
+          ["Push-хабарламалар", "Жаңалықтар және жаңа есеп айырысу парағы, түрлері баптауларда таңдалады"],
+          ["Қазақ және ағылшын тілдері", "Бүкіл интерфейс пен хабарламалар үш тілде"],
+          ["Рұқсатнаманың жаңа түрі", "Фото ортада, деректер ірі, телефонды бұрғанда ыңғайлы көрініс"],
+          ["Жылдам алғашқы кіру", "Үзілістен кейін қосымша 10-15 секунд күтпейді"],
+          ["Жұмыстан шыққандарды ажырату", "Жұмыстан шыққан қызметкер қолжеткізуден автоматты түрде айырылады"]
+        ]
+      },
+      "en": {
+        "date": "December 2026",
+        "title": "Sign-in with a code and biometrics",
+        "items": [
+          ["Sign-in code", "A short code instead of a password at every sign-in"],
+          ["Face ID and fingerprint", "Sign in with your face or fingerprint"],
+          ["Lock after a break", "The app asks for the code or biometrics again"],
+          ["Change and reset the code", "Change the code in the settings, reset a forgotten one"],
+          ["My requests", "All requests and certificates in one list with statuses"],
+          ["Cancel a request", "A request can be cancelled until it is processed"],
+          ["Push notifications", "News and a new payslip; choose the types in the settings"],
+          ["Kazakh and English", "The whole interface and messages in three languages"],
+          ["New pass design", "Photo in the center, large details, easy to view with the phone rotated"],
+          ["Fast first sign-in", "The app no longer waits 10-15 seconds after a break"],
+          ["Disabling former employees", "A dismissed employee loses access automatically"]
+        ]
+      }
     },
     {
       "version": "1.0.8",
@@ -32,7 +66,31 @@
         ["new", "Уведомления и настройки", "Список уведомлений и личные настройки"],
         ["better", "Работа без сети", "Данные открываются без связи"],
         ["better", "Предложение обновиться", "Если версия устарела, приложение ведет в магазин"]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы қазан – қараша",
+        "title": "Қауіпсіздік және анықтамалар",
+        "items": [
+          ["Қолжеткізу коды арқылы тіркелу", "Кодты кадрлар бөлімі береді, құпиясөзді қызметкер өзі қояды"],
+          ["Анықтамаларға тапсырыс", "Жұмыс орнынан анықтама, оның ішінде жалақысы көрсетілген; тапсырысты кері қайтаруға болады"],
+          ["PDF анықтама", "Дайын анықтаманы жүктеп алуға немесе жіберуге болады"],
+          ["Хабарламалар және баптаулар", "Хабарламалар тізімі және жеке баптаулар"],
+          ["Желісіз жұмыс", "Деректер байланыссыз ашылады"],
+          ["Жаңартуға ұсыныс", "Нұсқа ескірсе, қосымша дүкенге бағыттайды"]
+        ]
+      },
+      "en": {
+        "date": "October – November 2026",
+        "title": "Security and certificates",
+        "items": [
+          ["Registration with an access code", "HR issues the code, the employee sets the password"],
+          ["Certificate orders", "Employment certificate, including one with salary; an order can be withdrawn"],
+          ["Certificate in PDF", "A ready certificate can be downloaded or sent"],
+          ["Notifications and settings", "A list of notifications and personal settings"],
+          ["Offline mode", "Data opens without a connection"],
+          ["Update prompt", "If the version is outdated, the app opens the store"]
+        ]
+      }
     },
     {
       "version": "1.0.2 – 1.0.7",
@@ -44,7 +102,27 @@
         ["new", "Новости компании", "Лента новостей с картинками"],
         ["new", "Светлая и темная тема", "Переключается в настройках"],
         ["better", "Калькулятор без входа", "Доступен до регистрации"]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы қыркүйек",
+        "title": "Күнделікті ыңғайлылық",
+        "items": [
+          ["Қызметкер фотосы", "Рұқсатнама мен профильге өз фотоңыз"],
+          ["Компания жаңалықтары", "Суреттері бар жаңалықтар таспасы"],
+          ["Ашық және қараңғы тақырып", "Баптауларда ауыстырылады"],
+          ["Кірусіз калькулятор", "Тіркелуге дейін қолжетімді"]
+        ]
+      },
+      "en": {
+        "date": "September 2026",
+        "title": "Everyday convenience",
+        "items": [
+          ["Employee photo", "Your own photo for the pass and profile"],
+          ["Company news", "A news feed with images"],
+          ["Light and dark theme", "Switched in the settings"],
+          ["Calculator without signing in", "Available before registration"]
+        ]
+      }
     },
     {
       "version": "1.0.1",
@@ -62,7 +140,39 @@
         ["new", "Калькулятор зарплаты", "Расчет суммы на руки по налогам РК"],
         ["new", "Справки", "Первая версия раздела справок"],
         ["new", "Обучение", "Переход на портал обучения"]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы тамыз",
+        "title": "Қосымшаны іске қосу",
+        "items": [
+          ["ЖСН және құпиясөз арқылы кіру", "Ұйым ЖСН бойынша өзі табылады"],
+          ["Басты бет және профиль", "Еңбек өтілі, лауазым, бөлімше"],
+          ["Электронды рұқсатнама", "Фотосуреті бар рұқсатнама әрдайым телефонда"],
+          ["Айлар бойынша жалақы", "Таңдалған айдағы есептеулер мен ұстаулар"],
+          ["PDF есеп айырысу парағы", "Кез келген айға жүктеп алуға болады"],
+          ["Демалыс", "Қалған күндер және күндерін таңдап демалысқа өтініш"],
+          ["Өндірістік күнтізбе", "Жұмыс және мереке күндері"],
+          ["Жалақы калькуляторы", "ҚР салықтары бойынша қолға тиетін соманы есептеу"],
+          ["Анықтамалар", "Анықтамалар бөлімінің алғашқы нұсқасы"],
+          ["Оқыту", "Оқыту порталына өту"]
+        ]
+      },
+      "en": {
+        "date": "August 2026",
+        "title": "App launch",
+        "items": [
+          ["Sign-in with IIN and password", "The organization is found automatically by IIN"],
+          ["Home and profile", "Length of service, position, department"],
+          ["Digital pass", "A pass with a photo always on your phone"],
+          ["Pay by month", "Earnings and deductions for the selected month"],
+          ["Payslip in PDF", "Downloadable for any month"],
+          ["Leave", "Days left and a leave request with chosen dates"],
+          ["Working calendar", "Working days and public holidays"],
+          ["Salary calculator", "Net pay calculated under Kazakhstan taxes"],
+          ["Certificates", "First version of the certificates section"],
+          ["Training", "A link to the training portal"]
+        ]
+      }
     }
   ]
 }

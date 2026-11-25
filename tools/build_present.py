@@ -78,7 +78,7 @@ exec((ROOT / 'tools' / 'slides_mid.py').read_text(encoding='utf-8'))
 
 # 19. Маршрут
 S.append(slide('route-slide', 'Дорожная карта', '''<h2>Дорожная карта</h2>
-      <div id="route" class="route"></div>''', 'route-slide'))
+      <div id="route" class="route" data-i18n-skip></div>''', 'route-slide'))
 
 # 20. Как начать
 S.append(slide('start-using', 'Как начать', f'''<h2 class="mega">Регистрация за пару минут</h2>
@@ -105,7 +105,7 @@ S.append(slide('end', 'Скачать', f'''<div class="finale-grid">
         </div>
       </div>''', 'band finale'))
 
-ver = hashlib.md5(((ROOT / 'assets/site.css').read_bytes() + (ROOT / 'assets/deck.js').read_bytes())).hexdigest()[:8]
+ver = hashlib.md5(b''.join((ROOT / f).read_bytes() for f in ('assets/site.css', 'assets/deck.js', 'assets/i18n.js', 'assets/i18n/kk.js', 'assets/i18n/en.js'))).hexdigest()[:8]
 btn = lambda i, label, path: f'<button type="button" id="{i}" aria-label="{label}"><svg viewBox="0 0 24 24" aria-hidden="true">{path}</svg></button>'
 html = f'''<!doctype html>
 <html lang="ru">
@@ -121,6 +121,7 @@ html = f'''<!doctype html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/site.css?v={ver}">
 <script>try{{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script>
+<script>(function(){{var l=null,r=document.documentElement;try{{l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("lang")}}catch(e){{}}if(l==="kz")l="kk";if(l==="kk"||l==="en"){{r.lang=l;r.classList.add("i18n-wait");setTimeout(function(){{r.classList.remove("i18n-wait")}},1500)}}}})()</script>
 </head>
 <body class="present-page">
 
@@ -141,6 +142,9 @@ html = f'''<!doctype html>
 <main class="stage" id="stage">
 {"".join(S)}</main>
 
+<script src="../assets/i18n/kk.js?v={ver}"></script>
+<script src="../assets/i18n/en.js?v={ver}"></script>
+<script src="../assets/i18n.js?v={ver}"></script>
 <script src="../assets/deck.js?v={ver}"></script>
 </body>
 </html>
@@ -151,6 +155,6 @@ for f in ('index.html', 'roadmap.html', 'changes.html'):
     p = ROOT / f
     s = p.read_text(encoding='utf-8')
     s = re.sub(r'assets/site\.css(\?v=\w+)?"', f'assets/site.css?v={ver}"', s)
-    s = re.sub(r'assets/deck\.js(\?v=\w+)?"', f'assets/deck.js?v={ver}"', s)
+    s = re.sub(r'assets/(deck|i18n|i18n/kk|i18n/en)\.js(\?v=\w+)?"', lambda m: f'assets/{m.group(1)}.js?v={ver}"', s)
     p.write_text(s, encoding='utf-8', newline='\n')
 print('слайдов:', len(S), 'версия:', ver)

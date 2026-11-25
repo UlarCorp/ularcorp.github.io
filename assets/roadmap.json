@@ -1,6 +1,6 @@
 {
   "updated": "24.11.2026",
-  "note": "Маршрут: status done - уже у сотрудников, next - следующее обновление, plan - впереди. Пункт - пара [название, пояснение]. approx: true - срок ориентировочный.",
+  "note": "Маршрут: status done - уже у сотрудников, next - следующее обновление, plan - впереди. Пункт - пара [название, пояснение]. approx: true - срок ориентировочный. kk и en - перевод этапа: date, title, short и items в том же порядке, что и русские пункты.",
   "milestones": [
     {
       "id": "start",
@@ -49,7 +49,99 @@
           "Обучение",
           "Переход на портал обучения Moodle"
         ]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы тамыз",
+        "title": "Қосымшаны іске қосу",
+        "items": [
+          [
+            "ЖСН және құпиясөз арқылы кіру",
+            "Ұйым ЖСН бойынша өзі табылады"
+          ],
+          [
+            "Басты бет және профиль",
+            "Еңбек өтілі, лауазым, бөлімше"
+          ],
+          [
+            "Электронды рұқсатнама",
+            "Фотосуреті бар электронды рұқсатнама"
+          ],
+          [
+            "Айлар бойынша жалақы",
+            "Таңдалған айдағы есептеулер мен ұстаулар"
+          ],
+          [
+            "PDF есеп айырысу парағы",
+            "Кез келген айға жүктеп алуға болады"
+          ],
+          [
+            "Демалыс",
+            "Қалған күндер және күндерін таңдап демалысқа өтініш"
+          ],
+          [
+            "Өндірістік күнтізбе",
+            "Жұмыс және мереке күндері"
+          ],
+          [
+            "Жалақы калькуляторы",
+            "ҚР салықтары бойынша қолға тиетін соманы есептеу"
+          ],
+          [
+            "Анықтамалар",
+            "Анықтамалар бөлімінің алғашқы нұсқасы"
+          ],
+          [
+            "Оқыту",
+            "Moodle оқыту порталына өту"
+          ]
+        ]
+      },
+      "en": {
+        "date": "August 2026",
+        "title": "App launch",
+        "items": [
+          [
+            "Sign-in with IIN and password",
+            "The organization is found automatically by IIN"
+          ],
+          [
+            "Home and profile",
+            "Length of service, position, department"
+          ],
+          [
+            "Digital pass",
+            "A digital pass with a photo"
+          ],
+          [
+            "Pay by month",
+            "Earnings and deductions for the selected month"
+          ],
+          [
+            "Payslip in PDF",
+            "Downloadable for any month"
+          ],
+          [
+            "Leave",
+            "Days left and a leave request with chosen dates"
+          ],
+          [
+            "Working calendar",
+            "Working days and public holidays"
+          ],
+          [
+            "Salary calculator",
+            "Net pay calculated under Kazakhstan taxes"
+          ],
+          [
+            "Certificates",
+            "First version of the certificates section"
+          ],
+          [
+            "Training",
+            "A link to the Moodle training portal"
+          ]
+        ]
+      }
     },
     {
       "id": "v107",
@@ -74,7 +166,51 @@
           "Калькулятор без входа",
           "Доступен до регистрации"
         ]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы қыркүйек",
+        "title": "Күнделікті ыңғайлылық",
+        "items": [
+          [
+            "Қызметкер фотосы",
+            "Рұқсатнама мен профильге өз фотоңыз"
+          ],
+          [
+            "Компания жаңалықтары",
+            "Суреттері бар жаңалықтар таспасы"
+          ],
+          [
+            "Ашық және қараңғы тақырып",
+            "Баптауларда ауыстырылады"
+          ],
+          [
+            "Кірусіз калькулятор",
+            "Тіркелуге дейін қолжетімді"
+          ]
+        ]
+      },
+      "en": {
+        "date": "September 2026",
+        "title": "Everyday convenience",
+        "items": [
+          [
+            "Employee photo",
+            "Your own photo for the pass and profile"
+          ],
+          [
+            "Company news",
+            "A news feed with images"
+          ],
+          [
+            "Light and dark theme",
+            "Switched in the settings"
+          ],
+          [
+            "Calculator without signing in",
+            "Available before registration"
+          ]
+        ]
+      }
     },
     {
       "id": "v108",
@@ -107,7 +243,67 @@
           "Справка в PDF",
           "Готовую справку можно скачать или отправить"
         ]
-      ]
+      ],
+      "kk": {
+        "date": "2026 жылғы қазан – қараша",
+        "title": "Қауіпсіздік және анықтамалар",
+        "items": [
+          [
+            "Қолжеткізу коды арқылы тіркелу",
+            "Кодты кадрлар бөлімі береді, құпиясөзді қызметкер өзі қояды"
+          ],
+          [
+            "Хабарламалар және баптаулар",
+            "Хабарламалар тізімі және жеке баптаулар"
+          ],
+          [
+            "Желісіз жұмыс",
+            "Деректер байланыссыз ашылады"
+          ],
+          [
+            "Жаңартуға ұсыныс",
+            "Нұсқа ескірсе, қосымша дүкенге бағыттайды"
+          ],
+          [
+            "Анықтамаларға тапсырыс",
+            "Жұмыс орнынан анықтама, оның ішінде жалақысы көрсетілген; тапсырысты кері қайтаруға болады"
+          ],
+          [
+            "PDF анықтама",
+            "Дайын анықтаманы жүктеп алуға немесе жіберуге болады"
+          ]
+        ]
+      },
+      "en": {
+        "date": "October – November 2026",
+        "title": "Security and certificates",
+        "items": [
+          [
+            "Registration with an access code",
+            "HR issues the code, the employee sets the password"
+          ],
+          [
+            "Notifications and settings",
+            "A list of notifications and personal settings"
+          ],
+          [
+            "Offline mode",
+            "Data opens without a connection"
+          ],
+          [
+            "Update prompt",
+            "If the version is outdated, the app opens the store"
+          ],
+          [
+            "Certificate orders",
+            "Employment certificate, including one with salary; an order can be withdrawn"
+          ],
+          [
+            "Certificate in PDF",
+            "A ready certificate can be downloaded or sent"
+          ]
+        ]
+      }
     },
     {
       "id": "v110",
@@ -162,7 +358,109 @@
         ]
       ],
       "approx": true,
-      "short": "Вход и уведомления"
+      "short": "Вход и уведомления",
+      "kk": {
+        "date": "2026 жылғы желтоқсан",
+        "title": "Келесі жаңарту",
+        "short": "Кіру және хабарламалар",
+        "items": [
+          [
+            "Кіру коды",
+            "Әр кірген сайын құпиясөздің орнына қысқа код"
+          ],
+          [
+            "Face ID және саусақ ізі",
+            "Бет немесе саусақ ізі арқылы кіру"
+          ],
+          [
+            "Үзілістен кейін бұғаттау",
+            "Қосымша қайтадан код немесе биометрия сұрайды"
+          ],
+          [
+            "Кодты ауыстыру және қалпына келтіру",
+            "Код баптауларда ауыстырылады, ұмытылған код қалпына келтіріледі"
+          ],
+          [
+            "Менің өтініштерім",
+            "Барлық өтініштер мен анықтамалар мәртебелерімен бір тізімде"
+          ],
+          [
+            "Өтінішті болдырмау",
+            "Өтініш рәсімделгенге дейін оны болдырмауға болады"
+          ],
+          [
+            "Push-хабарламалар",
+            "Жаңалықтар және жаңа есеп айырысу парағы, түрлері баптауларда таңдалады"
+          ],
+          [
+            "Қазақ және ағылшын тілдері",
+            "Бүкіл интерфейс пен хабарламалар үш тілде"
+          ],
+          [
+            "Рұқсатнаманың жаңа түрі",
+            "Іскерлік безендіру, телефонды бұрғанда ыңғайлы көрініс"
+          ],
+          [
+            "Жылдам алғашқы кіру",
+            "Үзілістен кейін қосымша 10-15 секунд күтпейді"
+          ],
+          [
+            "Жұмыстан шыққандарды ажырату",
+            "Жұмыстан шыққан қызметкер қолжеткізуден автоматты түрде айырылады"
+          ]
+        ]
+      },
+      "en": {
+        "date": "December 2026",
+        "title": "Next update",
+        "short": "Sign-in and notifications",
+        "items": [
+          [
+            "Sign-in code",
+            "A short code instead of a password at every sign-in"
+          ],
+          [
+            "Face ID and fingerprint",
+            "Sign in with your face or fingerprint"
+          ],
+          [
+            "Lock after a break",
+            "The app asks for the code or biometrics again"
+          ],
+          [
+            "Change and reset the code",
+            "Change the code in the settings, reset a forgotten one"
+          ],
+          [
+            "My requests",
+            "All requests and certificates in one list with statuses"
+          ],
+          [
+            "Cancel a request",
+            "A request can be cancelled until it is processed"
+          ],
+          [
+            "Push notifications",
+            "News and a new payslip; choose the types in the settings"
+          ],
+          [
+            "Kazakh and English",
+            "The whole interface and messages in three languages"
+          ],
+          [
+            "New pass design",
+            "A business-style design, easy to view with the phone rotated"
+          ],
+          [
+            "Fast first sign-in",
+            "The app no longer waits 10-15 seconds after a break"
+          ],
+          [
+            "Disabling former employees",
+            "A dismissed employee loses access automatically"
+          ]
+        ]
+      }
     },
     {
       "id": "managers",
@@ -201,7 +499,77 @@
         ]
       ],
       "approx": true,
-      "short": "Согласование"
+      "short": "Согласование",
+      "kk": {
+        "date": "2027 жылғы I тоқсан",
+        "title": "Телефонда келісу",
+        "short": "Келісу",
+        "items": [
+          [
+            "Бағыныштылардың өтініштері",
+            "Басшы өтініштерді көріп, оларды телефонда келіседі"
+          ],
+          [
+            "Өтініштер туралы хабарламалар",
+            "Өтініш немесе анықтама дайын болғанда телефонға хабарлама"
+          ],
+          [
+            "Келісуге арналған құжаттар",
+            "1С:Документооборот құжатын келісудің қосымша тәсілі, негізгі орны сонда қалады"
+          ],
+          [
+            "Келісу барысы",
+            "Өтініш қазір кімде, кім келісті, бас тарту себебі"
+          ],
+          [
+            "Алмастыру",
+            "Басшы демалыста болғанда орынбасары келіседі"
+          ],
+          [
+            "eGov Mobile арқылы ЭЦҚ қолтаңбасы",
+            "Қорытынды құжаттар үшін қарастырудамыз"
+          ],
+          [
+            "Рөлдер",
+            "Басшы мен кадрлар бөлімі қосымшада өз бөлімдерін көреді"
+          ]
+        ]
+      },
+      "en": {
+        "date": "Q1 2027",
+        "title": "Approvals on the phone",
+        "short": "Approvals",
+        "items": [
+          [
+            "Team requests",
+            "Managers see requests and approve them on the phone"
+          ],
+          [
+            "Request notifications",
+            "A message to the phone when a request or certificate is ready"
+          ],
+          [
+            "Documents for approval",
+            "An additional way to approve a document from 1C:Document Management, which remains the main place"
+          ],
+          [
+            "Approval progress",
+            "Who has the request now, who has approved it, the reason for rejection"
+          ],
+          [
+            "Delegation",
+            "While the manager is on leave, the deputy approves"
+          ],
+          [
+            "Digital signature via eGov Mobile",
+            "Under consideration for final documents"
+          ],
+          [
+            "Roles",
+            "Managers and HR see their own sections in the app"
+          ]
+        ]
+      }
     },
     {
       "id": "requests",
@@ -232,7 +600,61 @@
         ]
       ],
       "approx": true,
-      "short": "Новые заявления"
+      "short": "Новые заявления",
+      "kk": {
+        "date": "2027 жылғы I тоқсан",
+        "title": "Өтініштердің жаңа түрлері",
+        "short": "Жаңа өтініштер",
+        "items": [
+          [
+            "Ауру парағы",
+            "Қызметкер ауырғаны туралы хабарлайды, кадрлар бөлімі парақты рәсімдейді"
+          ],
+          [
+            "Жұмыстан шығу",
+            "Өз еркімен жұмыстан шығу туралы өтініш"
+          ],
+          [
+            "Іссапар",
+            "Күндері мен орны көрсетілген іссапарға өтінім"
+          ],
+          [
+            "Демалыс күні және демалыста жұмыс",
+            "Демалыс күнін алуға немесе демалыс күні жұмысқа шығуға өтініш"
+          ],
+          [
+            "Жеке деректерді өзгерту",
+            "Жаңа тегі, мекенжай, телефон, куәлік деректері"
+          ]
+        ]
+      },
+      "en": {
+        "date": "Q1 2027",
+        "title": "New request types",
+        "short": "New requests",
+        "items": [
+          [
+            "Sick leave",
+            "The employee reports sick leave, HR processes the sick note"
+          ],
+          [
+            "Resignation",
+            "A request to resign voluntarily"
+          ],
+          [
+            "Business trip",
+            "A business trip request with dates and destination"
+          ],
+          [
+            "Day off and weekend work",
+            "A request for a day off or to work on a day off"
+          ],
+          [
+            "Personal data update",
+            "New surname, address, phone, ID card details"
+          ]
+        ]
+      }
     },
     {
       "id": "portal",
@@ -255,7 +677,45 @@
         ]
       ],
       "approx": true,
-      "short": "Веб-портал"
+      "short": "Веб-портал",
+      "kk": {
+        "date": "2027 жылғы I тоқсан",
+        "title": "Браузердегі кабинет",
+        "short": "Веб-портал",
+        "items": [
+          [
+            "Маркетологқа",
+            "Қызметкерлерге арналған серіктестер, жеңілдіктер және жаңалықтар"
+          ],
+          [
+            "Кадрлар бөліміне",
+            "Қызметкерлердің өтініштері мен анықтамалары"
+          ],
+          [
+            "Әкімшіге",
+            "Ұйымдар, қолжеткізу және баптаулар"
+          ]
+        ]
+      },
+      "en": {
+        "date": "Q1 2027",
+        "title": "Portal in the browser",
+        "short": "Web portal",
+        "items": [
+          [
+            "For marketers",
+            "Partners, discounts and news for employees"
+          ],
+          [
+            "For HR",
+            "Employee requests and certificates"
+          ],
+          [
+            "For administrators",
+            "Organizations, access and settings"
+          ]
+        ]
+      }
     }
   ]
 }

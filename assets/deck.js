@@ -15,14 +15,14 @@
     for (var k in attrs) e.setAttribute(k, attrs[k]);
     return e;
   }
-  var STATUS = { done: "У сотрудников", next: "Следующее обновление", plan: "В плане" };
+  // Переводы - assets/i18n.js; без него (или для русского) строки остаются как есть
+  var L = window.I18N || { lang: "ru", t: function (s, v) { return v ? s.replace(/\{(\w+)\}/g, function (m, k) { return v[k]; }) : s; },
+    plural: function (n, ru) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? ru[0] : a >= 2 && a <= 4 && (b < 12 || b > 14) ? ru[1] : ru[2]; },
+    loc: function (o) { return o; } };
+  var T = L.t;
+  function status(s) { return T({ done: "У сотрудников", next: "Следующее обновление", plan: "В плане" }[s]); }
+  function when(m, paren) { return m.approx ? (paren ? T("{date} (ориентировочно)", { date: m.date }) : T("{date}, ориентировочно", { date: m.date })) : m.date; }
 
-  function plural(n, one, few, many) {
-    var a = n % 10, b = n % 100;
-    if (a === 1 && b !== 11) return one;
-    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return few;
-    return many;
-  }
 
   // Число растет от 0 до значения, когда маршрут появляется на экране
   function countUp(node, to) {
@@ -39,16 +39,16 @@
 
   // ---------- Маршрут ----------
   function buildRoute(host, data) {
-    var ms = data.milestones;
+    var ms = data.milestones.map(L.loc);
     var done = ms.filter(function (m) { return m.status === "done"; });
     var next = ms.filter(function (m) { return m.status === "next"; });
     var itemsDone = done.reduce(function (n, m) { return n + m.items.length; }, 0);
     var itemsNext = next.reduce(function (n, m) { return n + m.items.length; }, 0);
 
     var stats = el("div", "route-stats");
-    [[done.length, "из " + ms.length + " этапов пройдено"],
-     [itemsDone, plural(itemsDone, "возможность", "возможности", "возможностей") + " уже у сотрудников"],
-     [itemsNext, "выйдет в следующем обновлении"]].forEach(function (s) {
+    [[done.length, T("из {total} этапов пройдено", { total: ms.length })],
+     [itemsDone, L.plural(itemsDone, ["возможность уже у сотрудников", "возможности уже у сотрудников", "возможностей уже у сотрудников"], "@features")],
+     [itemsNext, T("выйдет в следующем обновлении")]].forEach(function (s) {
       var d = el("div", "stat");
       var b = el("b", null, "0");
       b.dataset.to = s[0];
@@ -71,7 +71,7 @@
 
     var scroll = el("div", "route-scroll");
     var s = svg("svg", { viewBox: "0 0 " + W + " " + H, class: "route-svg", role: "img",
-      "aria-label": "Маршрут развития: пройдено " + done.length + " этапов из " + ms.length });
+      "aria-label": T("Маршрут развития: пройдено {done} этапов из {total}", { done: done.length, total: ms.length }) });
     var defs = svg("defs", {});
     var grad = svg("linearGradient", { id: "rg", x1: "0", x2: "1", y1: "0", y2: "0" });
     grad.appendChild(svg("stop", { offset: "0", "stop-color": "#FFCE64" }));
@@ -96,14 +96,14 @@
     here.tag = tag;
     tag.appendChild(svg("rect", { x: "0", y: "0", width: "92", height: "28", rx: "14" }));
     var hereLabel = svg("text", { x: "46", y: "19", class: "here-label", "text-anchor": "middle" });
-    hereLabel.textContent = "Мы здесь";
+    hereLabel.textContent = T("Мы здесь");
     tag.appendChild(hereLabel);
     here.appendChild(tag);
 
     var nodes = svg("g", {});
     ms.forEach(function (m, i) {
       var g = svg("g", { class: "node " + m.status, transform: "translate(" + pts[i].x + " " + pts[i].y + ")",
-        tabindex: "0", role: "button", "aria-label": m.version + ", " + (m.approx ? "ориентировочно " : "") + m.date + ": " + m.title });
+        tabindex: "0", role: "button", "aria-label": m.version + ", " + when(m) + ": " + m.title });
       var ahead = m.status !== "done";
       if (m.status === "next") g.appendChild(svg("circle", { r: "16", class: "halo" }));
       g.appendChild(svg("circle", { r: ahead ? "19" : "16", class: "ring" }));
@@ -145,14 +145,14 @@
     host.appendChild(panel);
 
     var tools = el("div", "route-tools");
-    var pdf = el("button", "tool", "Скачать PDF");
+    var pdf = el("button", "tool", T("Скачать PDF"));
     pdf.type = "button";
     pdf.addEventListener("click", function () { window.print(); });
-    var csv = el("button", "tool", "Скачать для Excel");
+    var csv = el("button", "tool", T("Скачать для Excel"));
     csv.type = "button";
     csv.addEventListener("click", function () { downloadCsv(data); });
     tools.appendChild(pdf); tools.appendChild(csv);
-    tools.appendChild(el("span", "updated", "Обновлено " + data.updated));
+    tools.appendChild(el("span", "updated", T("Обновлено {date}", { date: data.updated })));
     host.appendChild(tools);
 
     // Полный список - для печати и для отдельной страницы
@@ -161,7 +161,7 @@
       var sec = el("section", "ms " + m.status);
       var h = el("h3", null, m.version + " · " + m.title);
       sec.appendChild(h);
-      sec.appendChild(el("p", "ms-meta", (m.approx ? m.date + ", ориентировочно" : m.date) + " — " + STATUS[m.status]));
+      sec.appendChild(el("p", "ms-meta", when(m) + " — " + status(m.status)));
       var ul = el("ul", null);
       m.items.forEach(function (p) {
         var li = el("li", null);
@@ -189,8 +189,8 @@
       var m = ms[i];
       var inner = el("div", "card-inner " + m.status);
       var head = el("div", "card-head");
-      head.appendChild(el("span", "chip " + m.status, STATUS[m.status]));
-      head.appendChild(el("span", "card-date", m.approx ? m.date + ", ориентировочно" : m.date));
+      head.appendChild(el("span", "chip " + m.status, status(m.status)));
+      head.appendChild(el("span", "card-date", when(m)));
       inner.appendChild(head);
       inner.appendChild(el("h3", null, m.version + " — " + m.title));
       var ul = el("ul", null);
@@ -233,6 +233,9 @@
       var down = lastDone + 1 < n && pts[lastDone + 1].y > pts[lastDone].y;
       here.tag.setAttribute("transform", down ? "translate(16 -46)" : "translate(18 22)");
       passed.style.strokeDasharray = total;
+      // ширина плашки «Мы здесь» - по длине подписи на текущем языке
+      var tw = Math.ceil(hereLabel.getComputedTextLength ? hereLabel.getComputedTextLength() : 64) + 28;
+      if (tw > 40) { tag.firstChild.setAttribute("width", tw); hereLabel.setAttribute("x", tw / 2); }
     }
     function place(L) {
       passed.style.strokeDashoffset = total - L;
@@ -258,20 +261,20 @@
     }
     measure(); place(0);
     select(Math.min(lastDone + 1, n - 1), false);
-    return { play: play };
+    return { play: play, played: function () { return played; } };
   }
 
   function downloadCsv(data) {
-    var rows = [["Этап", "Когда", "Статус", "Возможность", "Что это"]];
-    data.milestones.forEach(function (m) {
-      m.items.forEach(function (p) { rows.push([m.version + " — " + m.title, m.approx ? m.date + " (ориентировочно)" : m.date, STATUS[m.status], p[0], p[1]]); });
+    var rows = [[T("Этап"), T("Когда"), T("Статус"), T("Возможность"), T("Что это")]];
+    data.milestones.map(L.loc).forEach(function (m) {
+      m.items.forEach(function (p) { rows.push([m.version + " — " + m.title, when(m, true), status(m.status), p[0], p[1]]); });
     });
     var text = "﻿" + rows.map(function (r) {
       return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";");
     }).join("\r\n");
     var a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
-    a.download = "Кабинет сотрудника - дорожная карта " + data.updated + ".csv";
+    a.download = T("Кабинет сотрудника - дорожная карта {date}", { date: data.updated }) + ".csv";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
@@ -280,11 +283,11 @@
   // Данные лежат рядом со скриптом: работает и с главной, и из папки презентации
   var base = (document.currentScript && document.currentScript.src) || location.href;
   var routeHost = document.getElementById("route");
-  var route = null;
+  var route = null, routeData = null, changesData = null;
   var ready = routeHost ? fetch(new URL("roadmap.json", base), { cache: "no-cache" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (data) { route = buildRoute(routeHost, data); })
-    .catch(function () { routeHost.appendChild(el("p", "updated", "Не удалось загрузить дорожную карту. Обновите страницу.")); })
+    .then(function (data) { routeData = data; route = buildRoute(routeHost, data); })
+    .catch(function () { routeHost.appendChild(el("p", "updated", T("Не удалось загрузить дорожную карту. Обновите страницу."))); })
     : Promise.resolve();
 
   // ---------- Страница «Изменения»: релизы из changes.json, новые сверху ----------
@@ -293,9 +296,9 @@
     better: '<path d="M12 19V5M6 11l6-6 6 6"/>',
     fix: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>'
   };
-  var CH_TYPE = { new: "Новое", better: "Улучшение", fix: "Исправление" };
+  function chType(k) { return T({ new: "Новое", better: "Улучшение", fix: "Исправление" }[k] || ""); }
   function buildChanges(host, data) {
-    (data.releases || []).forEach(function (r, i) {
+    (data.releases || []).map(L.loc).forEach(function (r, i) {
       var sec = el("section", "rel" + (r.status === "soon" ? " soon" : ""));
       sec.style.setProperty("--i", i);
       var head = el("header", "rel-head");
@@ -304,14 +307,14 @@
       meta.appendChild(el("h2", null, r.title));
       meta.appendChild(el("span", "rel-date", r.date));
       head.appendChild(meta);
-      head.appendChild(el("span", "rel-status", r.status === "soon" ? "Готовится" : "Выпущен"));
+      head.appendChild(el("span", "rel-status", T(r.status === "soon" ? "Готовится" : "Выпущен")));
       sec.appendChild(head);
       var list = el("ul", "rel-items");
       (r.items || []).forEach(function (it) {
         var li = el("li", "rel-item t-" + it[0]);
         var ic = el("span", "rel-ic");
         ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + (CH_ICON[it[0]] || CH_ICON.new) + "</g></svg>";
-        ic.title = CH_TYPE[it[0]] || "";
+        ic.title = chType(it[0]);
         li.appendChild(ic);
         var tx = el("div");
         tx.appendChild(el("b", null, it[1]));
@@ -331,8 +334,8 @@
   var changesHost = document.getElementById("changes");
   if (changesHost) fetch(new URL("changes.json", base), { cache: "no-cache" })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (data) { buildChanges(changesHost, data); })
-    .catch(function () { changesHost.appendChild(el("p", "updated", "Не удалось загрузить изменения. Обновите страницу.")); });
+    .then(function (data) { changesData = data; buildChanges(changesHost, data); })
+    .catch(function () { changesHost.appendChild(el("p", "updated", T("Не удалось загрузить изменения. Обновите страницу."))); });
 
   // Тема: переключатель запоминает выбор; без выбора - как в системе
   // Новая тема расходится кругом от места нажатия (как в QazDesk); без поддержки браузера - сразу
@@ -585,6 +588,17 @@
   }
 
   var isPresent = document.body.classList.contains("present-page");
+  var watchRoute = null;
+  // Смена языка (assets/i18n.js): маршрут и список изменений собираются заново из тех же данных
+  document.addEventListener("langchange", function () {
+    if (routeHost && routeData) {
+      var was = route && route.played();
+      routeHost.replaceChildren();
+      route = buildRoute(routeHost, routeData);
+      if (was) route.play(); else if (watchRoute) watchRoute();
+    }
+    if (changesHost && changesData) { changesHost.replaceChildren(); buildChanges(changesHost, changesData); }
+  });
 
   // ---------- Главная: плавное появление разделов и запуск маршрута ----------
   if (!isPresent) {
@@ -594,9 +608,13 @@
     Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function (s) { io.observe(s); });
     ready.then(function () {
       if (!route) return;
-      var obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { route.play(); obs.disconnect(); } }, { threshold: 0.3 });
-      obs.observe(routeHost.querySelector(".route-svg") || routeHost);
+      watchRoute = function () {
+        var obs = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { route.play(); obs.disconnect(); } }, { threshold: 0.3 });
+        obs.observe(routeHost.querySelector(".route-svg") || routeHost);
+      };
+      watchRoute();
     });
+    if (L.refresh) L.refresh();
     return;
   }
 
@@ -701,4 +719,5 @@
     window.addEventListener("hashchange", fromHash);
     fromHash();
   });
+  if (L.refresh) L.refresh();
 })();
