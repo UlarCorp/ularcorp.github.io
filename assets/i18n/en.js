@@ -254,5 +254,12 @@ window.I18N_DICT.en = {
   "Выпущен": "Released",
   "Предыдущий экран": "Previous screen",
   "Следующий экран": "Next screen",
+  "Ular за минуту": "Ular in a minute",
+  "Смотреть ролик": "Watch the video",
+  "Главы ролика": "Video chapters",
+  "Справки": "Certificates",
+  "Мои заявления": "My requests",
+  "Вход по коду": "Sign in with a code",
+  "Языки и темы": "Languages and themes",
   "@features": ["feature already available", "features already available"]
 };

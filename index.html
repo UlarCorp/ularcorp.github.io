@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=1446a52e">
+<link rel="stylesheet" href="assets/site.css?v=3d07ad42">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <script>(function(){var l=null,r=document.documentElement;try{l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("lang")}catch(e){}if(l==="kz")l="kk";if(l==="kk"||l==="en"){r.lang=l;r.classList.add("i18n-wait");setTimeout(function(){r.classList.remove("i18n-wait")},1500)}})()</script>
 </head>
@@ -58,6 +58,35 @@
         <div class="float-card fc1"><span>К получению</span><b>234 660 ₸</b></div>
         <div class="float-card fc2"><span>Остаток отпуска</span><b>8 дней</b></div>
         <div class="float-card fc3"><i></i><div><b>Справка готова</b><span>PDF в приложении</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="flow-block reveal" id="video">
+    <div class="wrap">
+      <h2>Ular за минуту</h2>
+      <div class="player" id="player">
+        <div class="player-screen">
+          <video id="promo" playsinline preload="none" poster="assets/video/poster-16x9.webp"
+            data-src-h="assets/video/ular-16x9.mp4" data-poster-h="assets/video/poster-16x9.webp"
+            data-src-v="assets/video/ular-9x16.mp4" data-poster-v="assets/video/poster-9x16.webp">
+            <source src="assets/video/ular-16x9.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="player-start" aria-label="Смотреть ролик"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></button>
+        </div>
+        <ol class="chapters" aria-label="Главы ролика">
+          <li><button type="button" data-t="0"><span class="ch-time">0:00</span><span class="ch-name">Главный экран</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="6"><span class="ch-time">0:06</span><span class="ch-name">Зарплата</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="13"><span class="ch-time">0:13</span><span class="ch-name">Калькулятор</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="16"><span class="ch-time">0:16</span><span class="ch-name">Отпуск</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="19"><span class="ch-time">0:19</span><span class="ch-name">Календарь</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="22"><span class="ch-time">0:22</span><span class="ch-name">Пропуск</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="28"><span class="ch-time">0:28</span><span class="ch-name">Справки</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="38"><span class="ch-time">0:38</span><span class="ch-name">Мои заявления</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="42"><span class="ch-time">0:42</span><span class="ch-name">Новости</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="47"><span class="ch-time">0:47</span><span class="ch-name">Вход по коду</span><i class="ch-bar"></i></button></li>
+          <li><button type="button" data-t="51"><span class="ch-time">0:51</span><span class="ch-name">Языки и темы</span><i class="ch-bar"></i></button></li>
+        </ol>
       </div>
     </div>
   </section>
@@ -155,9 +184,9 @@
 </footer>
 
 <button type="button" class="to-top" id="toTop" aria-label="Наверх"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-<script src="assets/i18n/kk.js?v=1446a52e"></script>
-<script src="assets/i18n/en.js?v=1446a52e"></script>
-<script src="assets/i18n.js?v=1446a52e"></script>
-<script src="assets/deck.js?v=1446a52e"></script>
+<script src="assets/i18n/kk.js?v=3d07ad42"></script>
+<script src="assets/i18n/en.js?v=3d07ad42"></script>
+<script src="assets/i18n.js?v=3d07ad42"></script>
+<script src="assets/deck.js?v=3d07ad42"></script>
 </body>
 </html>

@@ -721,3 +721,58 @@
   });
   if (L.refresh) L.refresh();
 })();
+
+// Ролик о приложении: на телефоне вертикальная версия, главы перематывают ролик и показывают, где он сейчас
+(function () {
+  var box = document.getElementById("player");
+  if (!box) return;
+  var v = document.getElementById("promo"), start = box.querySelector(".player-start");
+  var btns = [].slice.call(box.querySelectorAll(".chapters button"));
+  var marks = btns.map(function (b) { return +b.dataset.t; });
+  var mq = window.matchMedia("(max-width: 700px)");
+  var started = false, raf = 0, cur = -1;
+
+  function variant() { return mq.matches ? "v" : "h"; }
+  function setSource(keepTime) {
+    var k = variant(), src = v.dataset["src" + k.toUpperCase()] || v.getAttribute("data-src-" + k);
+    var t = keepTime ? v.currentTime : 0, playing = !v.paused;
+    v.poster = v.getAttribute("data-poster-" + k);
+    if (v.currentSrc && v.currentSrc.indexOf(src) >= 0) return;
+    v.src = src;
+    if (keepTime && started) {
+      v.addEventListener("loadedmetadata", function once() { v.removeEventListener("loadedmetadata", once); v.currentTime = t; if (playing) v.play(); });
+    }
+  }
+  function begin(t) {
+    if (!started) { started = true; box.classList.add("is-started"); v.controls = true; }
+    if (typeof t === "number") {
+      if (v.readyState >= 1) v.currentTime = t;
+      else v.addEventListener("loadedmetadata", function once() { v.removeEventListener("loadedmetadata", once); v.currentTime = t; });
+    }
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  }
+  function chapterAt(t) { var i = 0; for (var k = 0; k < marks.length; k++) if (t >= marks[k]) i = k; return i; }
+  function paint() {
+    var t = v.currentTime, i = started ? chapterAt(t) : -1, d = v.duration || 60;
+    if (i !== cur) {
+      btns.forEach(function (b, k) { b.classList.toggle("is-active", k === i); b.classList.toggle("is-done", k < i); b.setAttribute("aria-current", k === i ? "true" : "false"); });
+      cur = i;
+    }
+    btns.forEach(function (b, k) {
+      var bar = b.querySelector(".ch-bar");
+      if (k !== i) { if (k > i) bar.style.transform = ""; return; }
+      var end = k + 1 < marks.length ? marks[k + 1] : d;
+      bar.style.transform = "scaleX(" + Math.max(0, Math.min(1, (t - marks[k]) / (end - marks[k]))) + ")";
+    });
+  }
+  function loop() { paint(); raf = v.paused ? 0 : requestAnimationFrame(loop); }
+
+  setSource(false);
+  start.addEventListener("click", function () { begin(); });
+  btns.forEach(function (b) { b.addEventListener("click", function () { begin(+b.dataset.t); }); });
+  v.addEventListener("play", function () { if (!raf) raf = requestAnimationFrame(loop); });
+  v.addEventListener("seeked", paint);
+  v.addEventListener("pause", paint);
+  v.addEventListener("ended", function () { btns.forEach(function (b) { b.classList.add("is-done"); }); });
+  if (mq.addEventListener) mq.addEventListener("change", function () { setSource(true); });
+})();

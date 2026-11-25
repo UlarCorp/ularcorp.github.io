@@ -1255,3 +1255,41 @@ body { transition: opacity .18s ease; }
 html.i18n-wait body, html.lang-fade body { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { body, .lang-menu, .lang-menu svg { transition: none; } }
 @media print { .lang-menu, .lang-btn { display: none !important; } }
+
+/* Ролик о приложении: плеер и главы */
+.player { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; align-items: start; }
+.player-screen { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: #1F1E1C;
+  box-shadow: 0 24px 60px -24px rgba(80, 20, 0, .45); }
+.player-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #1F1E1C; }
+.player.is-started .player-screen video { object-fit: contain; }
+.player-start { position: absolute; left: 50%; top: 50%; width: 88px; height: 88px; margin: -44px 0 0 -44px; display: grid; place-items: center;
+  border: 0; border-radius: 50%; background: var(--ular); color: #fff; cursor: pointer;
+  box-shadow: 0 12px 32px rgba(80, 20, 0, .4); transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .35s ease, visibility .35s; }
+.player-start svg { width: 38px; height: 38px; margin-left: 6px; }
+.player-start:hover { transform: scale(1.07); }
+.player.is-started .player-start { opacity: 0; visibility: hidden; transform: scale(.85); }
+.chapters { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--fg); }
+.chapters li { border-bottom: 1px solid var(--line); }
+.chapters button { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; width: 100%; height: 40px;
+  padding: 0 8px; border: 0; background: transparent; color: var(--fg); font: 500 16px/1 var(--font); text-align: left; cursor: pointer;
+  border-radius: 8px; transition: background .25s ease, color .25s ease; }
+.chapters button:hover { background: color-mix(in srgb, var(--ular) 8%, transparent); }
+.ch-time { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; transition: color .25s ease; }
+.ch-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch-bar { position: absolute; left: 8px; right: 8px; bottom: -1px; height: 2px; background: var(--ular); transform: scaleX(0); transform-origin: left center; }
+.chapters button.is-active { color: var(--ular); font-weight: 600; }
+.chapters button.is-active .ch-time { color: var(--ular); }
+.chapters button.is-done .ch-bar { transform: scaleX(1); opacity: .35; transition: opacity .3s ease; }
+@media (max-width: 900px) {
+  .player { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+}
+@media (max-width: 700px) {
+  .player-screen { aspect-ratio: 9 / 16; width: min(100%, calc(76svh * 9 / 16)); margin-inline: auto; border-radius: 26px; }
+  .player-start { top: 74%; width: 76px; height: 76px; margin: -38px 0 0 -38px; }
+  .chapters { column-gap: 14px; }
+  .chapters button { grid-template-columns: 40px minmax(0, 1fr); height: auto; min-height: 44px; padding: 6px 4px; font-size: 15px; line-height: 1.25; }
+  .ch-name { white-space: normal; }
+  .ch-bar { left: 4px; right: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { .player-start, .chapters button, .ch-time { transition: none; } }
