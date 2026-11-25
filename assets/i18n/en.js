@@ -261,5 +261,6 @@ window.I18N_DICT.en = {
   "Мои заявления": "My requests",
   "Вход по коду": "Sign in with a code",
   "Языки и темы": "Languages and themes",
+  "Минута о главном: зарплата, отпуск, справки и пропуск.": "The essentials in a minute: pay, leave, certificates and your pass.",
   "@features": ["feature already available", "features already available"]
 };

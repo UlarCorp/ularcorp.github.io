@@ -406,8 +406,9 @@
     var pill = el("span", "nav-glass");
     pill.setAttribute("aria-hidden", "true");
     nav.insertBefore(pill, nav.firstChild);
-    var active = nav.querySelector('[aria-current="page"]');
+    var active = nav.querySelector('[aria-current="page"]'), cur = null;
     function moveTo(a) {
+      cur = a;
       if (!a || a.offsetParent === null) { pill.classList.remove("on"); return; }
       pill.style.width = a.offsetWidth + "px";
       pill.style.height = a.offsetHeight + "px";
@@ -420,6 +421,13 @@
     });
     nav.addEventListener("mouseleave", function () { moveTo(active); });
     window.addEventListener("resize", function () { moveTo(active); });
+    // после смены языка, темы или загрузки шрифта пункты меняют ширину и сдвигаются - подложку пересчитать
+    if ("ResizeObserver" in window) {
+      var ro = new ResizeObserver(function () { moveTo(nav.matches(":hover") ? cur : active); });
+      ro.observe(nav);
+      Array.prototype.forEach.call(nav.children, function (c) { if (c !== pill) ro.observe(c); });
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moveTo(active); });
     // на главной текущий раздел - тот, что на экране
     var map = items.map(function (a) { var h = a.getAttribute("href") || ""; return h.charAt(0) === "#" ? document.querySelector(h) : null; });
     if (map.some(Boolean) && "IntersectionObserver" in window) {
