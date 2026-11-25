@@ -254,7 +254,7 @@ window.I18N_DICT.en = {
   "Выпущен": "Released",
   "Предыдущий экран": "Previous screen",
   "Следующий экран": "Next screen",
-  "Ular за минуту": "Ular in a minute",
+  "Обзор приложения": "App overview",
   "Смотреть ролик": "Watch the video",
   "Главы ролика": "Video chapters",
   "Справки": "Certificates",
