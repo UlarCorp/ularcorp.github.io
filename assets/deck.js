@@ -722,7 +722,7 @@
   if (L.refresh) L.refresh();
 })();
 
-// Ролик о приложении: на телефоне вертикальная версия, главы перематывают ролик и показывают, где он сейчас
+// Ролик о приложении: вертикальная версия на телефоне, если задана data-src-v; главы перематывают ролик и показывают, где он сейчас
 (function () {
   var box = document.getElementById("player");
   if (!box) return;
@@ -732,7 +732,7 @@
   var mq = window.matchMedia("(max-width: 700px)");
   var started = false, raf = 0, cur = -1;
 
-  function variant() { return mq.matches ? "v" : "h"; }
+  function variant() { return mq.matches && v.hasAttribute("data-src-v") ? "v" : "h"; }
   function setSource(keepTime) {
     var k = variant(), src = v.dataset["src" + k.toUpperCase()] || v.getAttribute("data-src-" + k);
     var t = keepTime ? v.currentTime : 0, playing = !v.paused;
