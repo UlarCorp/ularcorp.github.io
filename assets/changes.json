@@ -3,8 +3,8 @@
   "releases": [
     {
       "version": "1.1.0",
-      "date": "Декабрь 2026",
-      "status": "soon",
+      "date": "Ноябрь 2026",
+      "status": "released",
       "title": "Вход по коду и биометрии",
       "items": [
         ["new", "Код для входа", "Короткий код вместо пароля при каждом входе"],
@@ -20,7 +20,7 @@
         ["better", "Отключение уволенных", "Уволенный теряет доступ автоматически"]
       ],
       "kk": {
-        "date": "2026 жылғы желтоқсан",
+        "date": "2026 жылғы қараша",
         "title": "Код және биометрия арқылы кіру",
         "items": [
           ["Кіру коды", "Әр кірген сайын құпиясөздің орнына қысқа код"],
@@ -37,7 +37,7 @@
         ]
       },
       "en": {
-        "date": "December 2026",
+        "date": "November 2026",
         "title": "Sign-in with a code and biometrics",
         "items": [
           ["Sign-in code", "A short code instead of a password at every sign-in"],

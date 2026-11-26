@@ -1,5 +1,5 @@
 {
-  "updated": "24.11.2026",
+  "updated": "27.11.2026",
   "note": "Маршрут: status done - уже у сотрудников, next - следующее обновление, plan - впереди. Пункт - пара [название, пояснение]. approx: true - срок ориентировочный. kk и en - перевод этапа: date, title, short и items в том же порядке, что и русские пункты.",
   "milestones": [
     {
@@ -307,10 +307,10 @@
     },
     {
       "id": "v110",
-      "date": "Декабрь 2026",
+      "date": "Ноябрь 2026",
       "version": "1.1.0",
-      "status": "next",
-      "title": "Следующее обновление",
+      "status": "done",
+      "title": "Вход по коду и уведомления",
       "items": [
         [
           "Код для входа",
@@ -357,11 +357,10 @@
           "Уволенный теряет доступ автоматически"
         ]
       ],
-      "approx": true,
       "short": "Вход и уведомления",
       "kk": {
-        "date": "2026 жылғы желтоқсан",
-        "title": "Келесі жаңарту",
+        "date": "2026 жылғы қараша",
+        "title": "Код арқылы кіру және хабарламалар",
         "short": "Кіру және хабарламалар",
         "items": [
           [
@@ -411,8 +410,8 @@
         ]
       },
       "en": {
-        "date": "December 2026",
-        "title": "Next update",
+        "date": "November 2026",
+        "title": "Code sign-in and notifications",
         "short": "Sign-in and notifications",
         "items": [
           [
@@ -466,7 +465,7 @@
       "id": "managers",
       "date": "I квартал 2027",
       "version": "1.1.1",
-      "status": "plan",
+      "status": "next",
       "title": "Согласование в телефоне",
       "items": [
         [
