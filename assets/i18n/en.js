@@ -263,7 +263,6 @@ window.I18N_DICT.en = {
   "Языки и темы": "Languages and themes",
   "Минута о главном: зарплата, отпуск, справки и пропуск.": "The essentials in a minute: pay, leave, certificates and your pass.",
   "Инструкции для кадровика": "Guides for HR staff",
-  "PDF на русском языке.": "PDF in Russian.",
   "Выдача кодов доступа": "Issuing access codes",
   "Как выдать новому сотруднику код для входа в приложение": "How to give a new employee a code to sign in to the app",
   "Заявки на справку": "Certificate requests",
